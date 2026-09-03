@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>个人资料</title>
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/auth.js' %}"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .sidebar-logo {
+      width: 56px; height: 56px; background: rgba(255,255,255,.2); border-radius: 14px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px;
+      color: rgba(255,255,255,.92); text-decoration: none; margin-bottom: 6px; cursor: pointer; transition: all .2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: var(--text); }
+    .page-subtitle { color: var(--text-muted); font-size: 14px; margin-top: 8px; }
+    .toolbar { display: flex; gap: 12px; margin-bottom: 20px; }
+    .toolbar button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f3f4f6;
+      color: var(--text);
+    }
+    .toolbar button.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .field input, .field textarea {
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .btn-primary {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .status-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='profile' %}
+
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">个人资料</h1>
+        <p class="page-subtitle">查看账户信息，并维护个人资料与账户安全设置。</p>
+      </div>
+
+      <div class="toolbar">
+        <button id="profileTabBtn" class="active" onclick="showSection('profile')">资料信息</button>
+        <button id="accountTabBtn" onclick="showSection('account')">账户安全</button>
+      </div>
+
+      <div id="profileSection" class="section active">
+        <div class="card">
+          <div class="card-title">基本信息</div>
+          <div class="profile-grid">
+            <div class="field">
+              <label for="profileUsername">用户名</label>
+              <input id="profileUsername" type="text" readonly>
+            </div>
+            <div class="field">
+              <label for="profileEmail">邮箱</label>
+              <input id="profileEmail" type="email" readonly>
+            </div>
+            <div class="field">
+              <label for="profileFullName">姓名</label>
+              <input id="profileFullName" type="text" placeholder="请输入姓名">
+            </div>
+            <div class="field">
+              <label for="profileRole">角色</label>
+              <input id="profileRole" type="text" readonly>
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label for="profileBio">个人说明</label>
+              <textarea id="profileBio" placeholder="可填写个人简介、研究方向或使用场景"></textarea>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="saveProfile()">保存资料</button>
+          <div id="profileMsg" class="status-box">当前页为资料展示壳子，可继续接后端保存接口。</div>
+        </div>
+      </div>
+
+      <div id="accountSection" class="section">
+        <div class="card">
+          <div class="card-title">账户安全</div>
+          <div class="field">
+            <label for="currentPassword">当前密码</label>
+            <input id="currentPassword" type="password" placeholder="输入当前密码">
+          </div>
+          <div class="field">
+            <label for="newPassword">新密码</label>
+            <input id="newPassword" type="password" placeholder="输入新密码">
+          </div>
+          <div class="field">
+            <label for="confirmPassword">确认新密码</label>
+            <input id="confirmPassword" type="password" placeholder="再次输入新密码">
+          </div>
+          <button class="btn-primary" onclick="updatePassword()">更新密码</button>
+          <div id="accountMsg" class="status-box">当前页为账户安全壳子，可继续接密码修改接口。</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    requireLogin()
+
+    function showSection(section){
+      document.getElementById("profileSection").classList.toggle("active", section === "profile")
+      document.getElementById("accountSection").classList.toggle("active", section === "account")
+      document.getElementById("profileTabBtn").classList.toggle("active", section === "profile")
+      document.getElementById("accountTabBtn").classList.toggle("active", section === "account")
+    }
+
+    async function loadProfile(){
+      try {
+        const res = await authFetch("/api/auth/me/")
+        if(!res.ok) return
+        const data = await res.json()
+        document.getElementById("profileUsername").value = data.username || ""
+        document.getElementById("profileEmail").value = data.email || ""
+        document.getElementById("profileRole").value = data.is_superuser ? "管理员" : data.is_staff ? "工作人员" : data.is_doctor ? "医生" : "普通用户"
+      } catch (e) {}
+    }
+
+    function saveProfile(){
+      document.getElementById("profileMsg").innerText = "资料页已统一样式，后续可继续接资料保存接口。"
+    }
+
+    function updatePassword(){
+      document.getElementById("accountMsg").innerText = "账户安全页已统一样式，后续可继续接密码修改接口。"
+    }
+
+    function goPage(url){ window.location.href = url }
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("section") === "account") {
+      showSection("account")
+    }
+    loadProfile()
+  </script>
+</body>
+</html>

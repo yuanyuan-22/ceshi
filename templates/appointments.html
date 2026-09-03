@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>门诊预约挂号</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/auth.js' %}"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+    .sidebar-logo {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,.2);
+      border-radius: 14px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: rgba(255,255,255,.92);
+      text-decoration: none;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .nav-item:hover,
+    .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      height: 100vh;
+      overflow-y: auto;
+      padding: 28px 32px;
+    }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 28px; font-weight: 700; }
+    .page-subtitle { color: var(--text-muted); font-size: 14px; margin-top: 8px; }
+    .hero-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .hero-card, .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+      border: 1px solid var(--border);
+    }
+    .hero-card .label { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; }
+    .hero-card .value { font-size: 28px; font-weight: 700; color: var(--primary); }
+    .grid { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 20px; }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .field input, .field textarea, .field select {
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99,102,241,.1);
+    }
+    .field textarea { resize: vertical; min-height: 108px; }
+    .btn {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99,102,241,.35);
+    }
+    .status-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+    .appointments, .slots { display: grid; gap: 12px; }
+    .appt-card, .slot-card {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fafafa;
+    }
+    .slot-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99,102,241,.08);
+    }
+    .confirm-card {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(99,102,241,.18);
+      background: #eef2ff;
+    }
+    .appt-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .appt-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .pill.booked { background: #e0e7ff; color: #4338ca; }
+    .pill.done { background: #d1fae5; color: #047857; }
+    .pill.cancelled { background: #fee2e2; color: #dc2626; }
+    .empty-box { text-align: center; color: var(--text-muted); padding: 28px 12px; font-size: 14px; }
+    .section-toggle {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .section-toggle > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      font-weight: 700;
+      color: var(--text);
+      background: #f8fafc;
+    }
+    .section-toggle > summary::-webkit-details-marker { display: none; }
+    .section-toggle[open] > summary { border-bottom: 1px solid var(--border); }
+    .section-body { padding: 16px; }
+    @media (max-width: 1100px) {
+      .hero-strip, .grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  {% include 'partials/app_sidebar.html' with active='appointments' %}
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">门诊预约挂号</h1>
+      <p class="page-subtitle">管理员按日期为医生排班，普通用户查看排班后按时段预约，医生查看自己的预约记录。</p>
+    </div>
+
+    <div class="hero-strip">
+      <div class="hero-card"><div class="label">挂号总数</div><div class="value" id="summaryTotal">-</div></div>
+      <div class="hero-card"><div class="label">待处理</div><div class="value" id="summaryWaiting">-</div></div>
+      <div class="hero-card"><div class="label">已完成</div><div class="value" id="summaryDone">-</div></div>
+    </div>
+
+    <div class="grid" id="patientGrid">
+      <div class="card" id="patientCard">
+        <div class="card-title">患者预约</div>
+        <div class="field">
+          <label for="doctorSelect">选择医生</label>
+          <select id="doctorSelect" onchange="handleDoctorChange()"></select>
+        </div>
+        <div class="field">
+          <label for="appointmentDate">选择日期</label>
+          <input id="appointmentDate" type="date" onchange="loadAvailableSlots()">
+        </div>
+        <div class="field">
+          <label for="reason">挂号原因（可选）</label>
+          <input id="reason" type="text" placeholder="例如：复诊、检查、咨询">
+        </div>
+        <div id="doctorInfo" class="confirm-card" style="display:none;"></div>
+        <div id="schedulePreview" class="confirm-card" style="display:none;"></div>
+        <div class="card-title" style="margin-top:8px;">可预约时段</div>
+        <div id="slotList" class="slots"><div class="empty-box">请选择医生和日期后加载可预约时段。</div></div>
+        <div id="slotConfirm" class="confirm-card" style="display:none;"></div>
+        <div id="appointmentMsg" class="status-box">请选择医生、日期和时间段后再提交挂号。</div>
+        <div id="appointmentSubmitArea" style="display:none; margin-top:14px;">
+          <button class="btn btn-primary" onclick="createAppointment()">确认并提交挂号</button>
+        </div>
+      </div>
+
+      <details class="section-toggle">
+        <summary>我的挂号记录</summary>
+        <div class="section-body">
+          <div id="appointmentList" class="appointments"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card" id="doctorViewCard" style="display:none; margin-top:20px;">
+      <div class="card-title">医生视角：我的预约</div>
+      <div class="status-box">医生仅查看与自己相关的预约记录，不展示详细问诊过程。</div>
+      <details class="section-toggle" open>
+        <summary>医生预约记录</summary>
+        <div class="section-body">
+          <div id="doctorAppointmentList" class="appointments"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card" id="doctorAdminCard" style="display:none; margin-top:20px;">
+      <div class="card-title">管理员配置：医生信息与按日期排班</div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div>
+          <div class="field"><label for="adminDoctorUsername">医生用户名</label><input id="adminDoctorUsername" type="text" placeholder="输入已有医生账号用户名"></div>
+          <div class="field"><label for="adminDoctorDepartment">科室</label><input id="adminDoctorDepartment" type="text" placeholder="例如：心内科"></div>
+          <div class="field"><label for="adminDoctorHospital">医院</label><input id="adminDoctorHospital" type="text" placeholder="例如：第一人民医院"></div>
+          <div class="field"><label for="adminDoctorTitle">职称</label><input id="adminDoctorTitle" type="text" placeholder="例如：主任医师"></div>
+          <div class="field"><label for="adminDoctorBio">医生简介</label><textarea id="adminDoctorBio" placeholder="简介、专长等"></textarea></div>
+          <button class="btn btn-primary" onclick="saveDoctorProfile()">保存医生信息</button>
+          <div class="status-box" id="doctorAdminMsg">管理员可将现有用户配置为医生。</div>
+        </div>
+        <div>
+          <div class="field"><label for="scheduleDoctorUsername">排班医生用户名</label><input id="scheduleDoctorUsername" type="text" placeholder="与医生用户名一致"></div>
+          <div class="field"><label for="scheduleDate">排班日期</label><input id="scheduleDate" type="date"></div>
+          <div class="field"><label for="scheduleStart">开始时间</label><input id="scheduleStart" type="time" value="09:00"></div>
+          <div class="field"><label for="scheduleEnd">结束时间</label><input id="scheduleEnd" type="time" value="12:00"></div>
+          <div class="field"><label for="scheduleSlotMinutes">每个时段时长（分钟）</label><input id="scheduleSlotMinutes" type="number" min="5" value="30"></div>
+          <div class="field"><label for="scheduleMax">每个时段最大挂号人数</label><input id="scheduleMax" type="number" min="1" value="5"></div>
+          <button class="btn btn-primary" onclick="saveDoctorSchedule()">保存排班</button>
+          <div class="status-box" id="scheduleMsg">管理员按具体日期为医生排班。</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+requireLogin()
+let isAdminUser = false
+let isDoctorUser = false
+let selectedSlot = null
+let currentDoctors = []
+
+async function loadDoctors(){
+  const token = localStorage.getItem("jwt_access")
+  const res = await fetch("/api/appointments/doctors/", { headers: { Authorization: "Bearer " + token } })
+  const data = await res.json()
+  currentDoctors = Array.isArray(data) ? data : []
+  const select = document.getElementById("doctorSelect")
+  select.innerHTML = ""
+  currentDoctors.forEach(item => {
+    const option = document.createElement("option")
+    option.value = item.user_id
+    option.textContent = `${item.full_name || item.username} / ${item.department || "未分科"} / ${item.title || "医生"}`
+    select.appendChild(option)
+  })
+  handleDoctorChange()
+}
+
+function handleDoctorChange(){
+  const doctorId = Number(document.getElementById("doctorSelect").value || 0)
+  const doctor = currentDoctors.find(item => item.user_id === doctorId)
+  const box = document.getElementById("doctorInfo")
+  const preview = document.getElementById("schedulePreview")
+  if(!doctor){
+    box.style.display = "none"
+    preview.style.display = "none"
+    return
+  }
+  box.style.display = "block"
+  box.innerHTML = `
+    <div><strong>医生：</strong>${doctor.full_name || doctor.username}</div>
+    <div><strong>科室：</strong>${doctor.department || "未分科"}</div>
+    <div><strong>医院：</strong>${doctor.hospital || "未填写医院"}</div>
+    <div><strong>职称：</strong>${doctor.title || "医生"}</div>
+  `
+  preview.style.display = "block"
+  preview.innerHTML = `<div><strong>提示：</strong>请选择日期后查看该医生当天排班与可预约时段。</div>`
+  loadAvailableSlots()
+}
+
+async function loadSummary(){
+  const token = localStorage.getItem("jwt_access")
+  const res = await fetch("/api/appointments/summary/", { headers: { Authorization: "Bearer " + token } })
+  const data = await res.json()
+  document.getElementById("summaryTotal").innerText = data.total ?? 0
+  document.getElementById("summaryWaiting").innerText = data.waiting ?? 0
+  document.getElementById("summaryDone").innerText = data.done ?? 0
+}
+
+function statusClassOf(status){
+  return String(status || "").toLowerCase()
+}
+
+function renderAppointmentCards(list, role){
+  if (!list.length) {
+    return '<div class="empty-box">当前还没有预约记录。</div>'
+  }
+  const maxVisible = 6
+  const visible = list.slice(0, maxVisible)
+  const hidden = list.slice(maxVisible)
+  const renderItem = (item) => `
+    <div class="appt-card">
+      <div class="appt-title">${role === "doctor" ? (item.patient_name || "患者") : (item.doctor_name || "医生")}</div>
+      <div class="appt-meta">
+        <span>${item.doctor_profile?.department || "未分科"}</span>
+        <span>${item.appointment_time || ""}</span>
+        <span class="pill ${statusClassOf(item.status)}">${item.status || "BOOKED"}</span>
+      </div>
+      ${role === "doctor"
+        ? `<p><strong>患者：</strong>${item.patient_name || "未标注"}</p>`
+        : `<p><strong>原因：</strong>${item.reason || "未填写"}</p>`}
+    </div>
+  `
+  return `
+    ${visible.map(renderItem).join("")}
+    ${hidden.length ? `<details class="section-toggle"><summary>展开更多记录 (${hidden.length})</summary><div class="section-body">${hidden.map(renderItem).join("")}</div></details>` : ""}
+  `
+}
+
+async function loadAppointments(){
+  const token = localStorage.getItem("jwt_access")
+  const res = await fetch("/api/appointments/", { headers: { Authorization: "Bearer " + token } })
+  const data = await res.json()
+  const list = Array.isArray(data) ? data : []
+  const html = renderAppointmentCards(list, isDoctorUser ? "doctor" : "patient")
+  const patientBox = document.getElementById("appointmentList")
+  const doctorBox = document.getElementById("doctorAppointmentList")
+  if (patientBox) patientBox.innerHTML = html
+  if (doctorBox) doctorBox.innerHTML = html
+}
+
+async function loadAvailableSlots(){
+  const token = localStorage.getItem("jwt_access")
+  const doctorId = document.getElementById("doctorSelect").value
+  const date = document.getElementById("appointmentDate").value
+  const box = document.getElementById("slotList")
+  const confirm = document.getElementById("slotConfirm")
+  const submitArea = document.getElementById("appointmentSubmitArea")
+
+  selectedSlot = null
+  confirm.style.display = "none"
+  submitArea.style.display = "none"
+
+  if(!doctorId || !date){
+    box.innerHTML = '<div class="empty-box">请选择医生和日期后加载可预约时段。</div>'
+    document.getElementById("schedulePreview").innerHTML = '<div><strong>提示：</strong>请选择日期后查看排班。</div>'
+    return
+  }
+
+  const res = await fetch(`/api/appointments/doctors/${doctorId}/slots/?date=${date}`, {
+    headers: { Authorization: "Bearer " + token }
+  })
+  const data = await res.json()
+  if(!res.ok || !data.slots?.length){
+    box.innerHTML = '<div class="empty-box">当天没有可预约时段。</div>'
+    document.getElementById("schedulePreview").innerHTML = `<div><strong>当天排班：</strong>${date} 无可预约时段。</div>`
+    return
+  }
+
+  box.innerHTML = ""
+  document.getElementById("schedulePreview").innerHTML = `
+    <div><strong>当天排班：</strong>${date}</div>
+    <div style="margin-top:6px;color:#6b7280;font-size:13px;">共 ${data.slots.length} 个可预约时段。</div>
+  `
+  data.slots.forEach(slot => {
+    const div = document.createElement("div")
+    div.className = "slot-card"
+    div.innerHTML = `
+      <div><strong>${slot.appointment_time}</strong></div>
+      <div style="margin-top:6px;color:#6b7280;font-size:13px;">剩余号源：${slot.remaining} / 时长：${slot.slot_minutes} 分钟</div>
+      <button class="btn btn-primary" style="margin-top:12px;">选择该时段</button>
+    `
+    div.querySelector("button").onclick = () => {
+      selectedSlot = slot.appointment_time
+      document.querySelectorAll(".slot-card").forEach(el => el.classList.remove("active"))
+      div.classList.add("active")
+      const doctor = currentDoctors.find(item => item.user_id === Number(doctorId))
+      confirm.style.display = "block"
+      submitArea.style.display = "block"
+      confirm.innerHTML = `
+        <div><strong>已确认挂号信息</strong></div>
+        <div style="margin-top:8px;"><strong>医生：</strong>${doctor?.full_name || doctor?.username || "-"}</div>
+        <div><strong>日期：</strong>${date}</div>
+        <div><strong>时间段：</strong>${slot.appointment_time}</div>
+        <div><strong>剩余号源：</strong>${slot.remaining}</div>
+      `
+      document.getElementById("appointmentMsg").innerText = `已选择时间段：${slot.appointment_time}`
+    }
+    box.appendChild(div)
+  })
+}
+
+async function createAppointment(){
+  const token = localStorage.getItem("jwt_access")
+  const doctor = document.getElementById("doctorSelect").value
+  const reason = document.getElementById("reason").value.trim()
+  const msg = document.getElementById("appointmentMsg")
+
+  if(!doctor || !selectedSlot){
+    msg.innerText = "请先选择医生，并从时间段中选择一个可预约时段。"
+    return
+  }
+
+  const res = await fetch("/api/appointments/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+    body: JSON.stringify({ doctor, appointment_time: selectedSlot, reason, note: "" })
+  })
+  const data = await res.json()
+  if(!res.ok){
+    msg.innerText = data.detail || data.non_field_errors?.[0] || "挂号失败"
+    return
+  }
+
+  msg.innerText = "挂号提交成功。"
+  document.getElementById("reason").value = ""
+  document.getElementById("appointmentSubmitArea").style.display = "none"
+  document.getElementById("slotConfirm").style.display = "none"
+  await loadSummary()
+  await loadAppointments()
+  await loadAvailableSlots()
+}
+
+async function saveDoctorProfile(){
+  const token = localStorage.getItem("jwt_access")
+  const payload = {
+    username: document.getElementById("adminDoctorUsername").value.trim(),
+    department: document.getElementById("adminDoctorDepartment").value.trim(),
+    hospital: document.getElementById("adminDoctorHospital").value.trim(),
+    title: document.getElementById("adminDoctorTitle").value.trim(),
+    bio: document.getElementById("adminDoctorBio").value.trim(),
+    is_active: true,
+  }
+  const msg = document.getElementById("doctorAdminMsg")
+  if(!payload.username){
+    msg.innerText = "请先输入医生用户名。"
+    return
+  }
+  const res = await fetch("/api/appointments/admin/doctors/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+    body: JSON.stringify(payload),
+  })
+  const data = await res.json()
+  if(!res.ok){
+    msg.innerText = data.detail || "保存失败"
+    return
+  }
+  msg.innerText = "医生信息保存成功。"
+  await loadDoctors()
+}
+
+async function saveDoctorSchedule(){
+  const token = localStorage.getItem("jwt_access")
+  const username = document.getElementById("scheduleDoctorUsername").value.trim()
+  const doctorRes = await fetch("/api/appointments/admin/doctors/", {
+    headers: { Authorization: "Bearer " + token },
+  })
+  const doctors = await doctorRes.json()
+  const doctor = Array.isArray(doctors) ? doctors.find(item => item.username === username) : null
+  const msg = document.getElementById("scheduleMsg")
+  if(!doctor){
+    msg.innerText = "未找到该医生，请先保存医生信息。"
+    return
+  }
+
+  const payload = {
+    doctor: doctor.user_id,
+    schedule_date: document.getElementById("scheduleDate").value,
+    start_time: document.getElementById("scheduleStart").value,
+    end_time: document.getElementById("scheduleEnd").value,
+    slot_minutes: Number(document.getElementById("scheduleSlotMinutes").value),
+    max_appointments_per_slot: Number(document.getElementById("scheduleMax").value),
+    is_active: true,
+    note: "",
+  }
+
+  const res = await fetch("/api/appointments/admin/schedules/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+    body: JSON.stringify(payload),
+  })
+  const data = await res.json()
+  if(!res.ok){
+    msg.innerText = data.detail || JSON.stringify(data) || "排班保存失败"
+    return
+  }
+  msg.innerText = "医生排班保存成功。"
+}
+
+function goPage(url){ window.location.href = url }
+function logout(){
+  localStorage.removeItem("jwt_access")
+  localStorage.removeItem("jwt_refresh")
+  window.location.href = "/login/"
+}
+
+;(async function initPage(){
+  const token = localStorage.getItem("jwt_access")
+  if(!token){
+    window.location.href = "/login/"
+    return
+  }
+
+  try {
+    const meRes = await fetch("/api/auth/me/", { headers: { Authorization: "Bearer " + token } })
+    if (meRes.ok) {
+      const me = await meRes.json()
+      if (me.is_staff || me.is_superuser) {
+        isAdminUser = true
+        document.getElementById("doctorAdminCard").style.display = "block"
+      }
+      if (me.is_doctor) {
+        isDoctorUser = true
+        document.getElementById("doctorViewCard").style.display = "block"
+      }
+    }
+  } catch (e) {}
+
+  if (isDoctorUser || isAdminUser) {
+    document.getElementById("patientCard").style.display = "block"
+  }
+
+  await loadDoctors()
+  await loadSummary()
+  await loadAppointments()
+})()
+</script>
+</body>
+</html>

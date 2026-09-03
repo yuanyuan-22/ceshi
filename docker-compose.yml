@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: medical_ai_system
+      MYSQL_USER: medical_user
+      MYSQL_PASSWORD: ${DB_PASSWORD:-medical_pass_2024}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_pass_2024}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      # Uncomment and set the host paths to your model directories.
+      # Without these, translation/QA will return 500 (models are NOT in the repo).
+      # - /path/to/your/huggingface:/app/huggingface
+      # - /path/to/your/lora-models:/app/scripts/models
+      # - /path/to/your/kb-data:/app/backend/data/kb
+      - kb_uploads_data:/app/kb_uploads
+      - staticfiles_data:/app/staticfiles
+
+volumes:
+  mysql_data:
+  kb_uploads_data:
+  staticfiles_data:

@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>翻译助手</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/auth.js' %}"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .sidebar-logo {
+      width: 56px; height: 56px; background: rgba(255,255,255,.2); border-radius: 14px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px;
+      color: rgba(255,255,255,.92); text-decoration: none; margin-bottom: 6px; cursor: pointer; transition: all .2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .content-wrapper { width: 100%; max-width: none; }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: var(--text); }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .form-input, select, textarea {
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .form-input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-secondary { background: #f3f4f6; color: var(--text); }
+    .btn-group { display: flex; gap: 12px; margin-top: 16px; }
+    .answer-box {
+      min-height: 80px;
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #ffffff, #fafcff);
+      padding: 14px;
+      line-height: 1.7;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .status-box {
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+    .status-box.waiting { background: #f3f4f6; color: var(--text-muted); }
+    .status-box.loading { background: #dbeafe; color: #2563eb; }
+    .status-box.success { background: #dcfce7; color: var(--success); }
+    .status-box.error { background: #fee2e2; color: var(--danger); }
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .meta-item { background: #fafafa; border-radius: 10px; padding: 12px; text-align: center; }
+    .meta-item .k { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+    .meta-item .v { font-size: 14px; font-weight: 700; color: var(--text); }
+    .empty-box { color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px; }
+    .term-cards { max-height: 500px; overflow-y: auto; }
+    .term-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafcff;
+      margin-bottom: 10px;
+    }
+    .term-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .term-main { font-weight: 700; font-size: 14px; color: var(--text); }
+    .term-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #e0e7ff; color: #4338ca; }
+    .term-explain {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.5;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .feedback-buttons { display: flex; gap: 10px; margin-bottom: 12px; }
+    .btn-feedback {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-feedback.good { background: #dcfce7; color: var(--success); border-color: #bbf7d0; }
+    .btn-feedback.bad { background: #fee2e2; color: var(--danger); border-color: #fecaca; }
+    .btn-feedback.active {
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.18);
+      border-color: #6366f1;
+      transform: translateY(-1px);
+    }
+    .feedback-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .feedback-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .term-note { margin-top: 10px; font-size: 12px; color: var(--text-muted); }
+    .feedback-context {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f8fafc;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .feedback-context strong { color: var(--text); }
+    .feedback-context-text {
+      margin-top: 6px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text);
+    }
+    .debug-card .json {
+      margin: 0;
+      max-height: 260px;
+      overflow: auto;
+      background: #1f2937;
+      color: #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare-col { display: flex; flex-direction: column; gap: 8px; }
+    .compare-head { display: flex; align-items: center; gap: 8px; }
+    .compare-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+    .compare-badge.base { background: #f3f4f6; color: #6b7280; }
+    .compare-badge.lora { background: #e0e7ff; color: #4338ca; }
+    .compare-hint { font-size: 11px; color: var(--text-muted); }
+    .term-hl { background: #fef3c7; border-bottom: 2px solid #f59e0b; border-radius: 3px; padding: 0 2px; cursor: help; font-weight: 600; }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+      .form-grid, .meta-grid, .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='translate' %}
+
+    <main class="main-content">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h1 class="page-title">翻译助手</h1>
+        </div>
+
+        <div class="card">
+          <div class="card-title">翻译输入</div>
+          <div class="form-group full">
+            <label class="form-label">待翻译文本</label>
+            <textarea id="text" class="form-input" placeholder="请输入需要翻译的医学文本...">The patient has diabetes and hypertension.</textarea>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">源语言</label>
+              <select id="src">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">目标语言</label>
+              <select id="tgt">
+                <option value="zh">中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="doTranslate()">翻译</button>
+            <button class="btn btn-secondary" onclick="clearForm()">清空</button>
+          </div>
+          <div id="reqStatus" class="status-box waiting">等待翻译...</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">翻译结果</div>
+          <div class="form-group full" style="margin-bottom:12px;">
+            <label class="form-label">原文高亮</label>
+            <div class="answer-box" id="sourceHighlightedText">（暂无原文）</div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">译文对比（原始模型 vs LoRA 微调）</label>
+            <div class="compare-grid">
+              <div class="compare-col">
+                <div class="compare-head">
+                  <span class="compare-badge base">原始 NLLB-600M</span>
+                  <span class="compare-hint">未微调基线</span>
+                </div>
+                <div class="answer-box" id="baseTranslationText">（暂无翻译）</div>
+              </div>
+              <div class="compare-col">
+                <div class="compare-head">
+                  <span class="compare-badge lora">LoRA 微调</span>
+                  <span class="compare-hint">医学领域微调 · 术语高亮</span>
+                </div>
+                <div class="answer-box" id="translatedText">（暂无翻译）</div>
+              </div>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-item"><div class="k">Task ID</div><div class="v" id="metaTaskId">-</div></div>
+            <div class="meta-item"><div class="k">Latency</div><div class="v" id="metaLatency">-</div></div>
+            <div class="meta-item"><div class="k">Mode</div><div class="v" id="metaMode">-</div></div>
+            <div class="meta-item"><div class="k">Terms</div><div class="v" id="metaTerms">-</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">术语卡片</div>
+          <div id="termCards" class="term-cards">
+            <div class="empty-box">（暂无术语卡片）</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">结果反馈</div>
+          <div class="feedback-hint">可以直接修改译文并提交，反馈将保存到系统中，作为后续优化依据。</div>
+          <div class="feedback-buttons">
+            <button id="fb_rating_good" class="btn-feedback good" onclick="selectFeedbackRating(1)">有帮助</button>
+            <button id="fb_rating_bad" class="btn-feedback bad" onclick="selectFeedbackRating(-1)">没帮助</button>
+            <button id="fb_rating_neutral" class="btn-feedback" onclick="selectFeedbackRating(0)">仅提交修订</button>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">反馈原因</label>
+              <select id="fb_reason" class="form-input">
+                <option value="术语不准">术语不准</option>
+                <option value="高亮不准">高亮不准</option>
+                <option value="解释不相关">解释不相关</option>
+                <option value="其它">其它</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">翻译方向</label>
+              <input id="fb_direction" class="form-input" type="text" readonly value="-">
+            </div>
+          </div>
+          <div class="feedback-context">
+            <div><strong>原文：</strong></div>
+            <div id="fb_source_text" class="feedback-context-text">（暂无原文）</div>
+          </div>
+          <div class="form-group" style="margin-top:12px;">
+            <label class="form-label">修订后的译文</label>
+            <textarea id="fb_corrected_translation" class="form-input" placeholder="可修改为更合适的译文，提交后作为修订反馈保存"></textarea>
+          </div>
+          <div class="form-group" style="margin-top:12px;">
+            <label class="form-label">补充说明</label>
+            <textarea id="fb_comment" class="form-input" placeholder="可选：说明哪里不准确，或给出补充意见"></textarea>
+          </div>
+          <div class="feedback-actions">
+            <button class="btn btn-primary" onclick="submitFeedback()">提交反馈</button>
+            <button class="btn btn-secondary" onclick="resetFeedbackForm()">重置反馈</button>
+          </div>
+          <div id="fb_status" class="status-box waiting">等待反馈...</div>
+        </div>
+
+        <div class="card debug-card">
+          <div class="card-title">调试信息</div>
+          <pre id="raw" class="json">{}</pre>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    requireLogin()
+    window.lastTaskId = null
+    window.lastTranslationData = null
+    window.selectedFeedbackRating = 0
+
+    async function doTranslate(){
+      const text = document.getElementById("text").value
+      const src = document.getElementById("src").value
+      const tgt = document.getElementById("tgt").value
+
+      setStatus("请求中...", "loading")
+
+      try{
+        const resp = await authFetch("/api/translate/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, src_lang: src, tgt_lang: tgt, domain: "general" })
+        })
+
+        const data = await resp.json()
+        document.getElementById("raw").textContent = JSON.stringify(data, null, 2)
+
+        if(!resp.ok){
+          setStatus("请求失败", "error")
+          return
+        }
+
+        setStatus("完成", "success")
+        renderResult(data)
+        window.lastTaskId = data.task_id || null
+      }catch(e){
+        console.error("translate page error", e)
+        setStatus("请求异常", "error")
+      }
+    }
+
+    function renderResult(data){
+      window.lastTranslationData = data || null
+      const sourceText = data.source_text || ""
+      const baseText = data.base_translation || ""
+      const loraText = data.lora_translation || ""
+      const termsSrc = data.terms_src || []
+      const termsTgt = data.terms_tgt || []
+      const termCards = data.term_cards || []
+
+      document.getElementById("sourceHighlightedText").innerHTML =
+        sourceText ? highlightTerms(sourceText, termsSrc) : "（暂无原文）"
+      document.getElementById("baseTranslationText").textContent = baseText || "（暂无翻译）"
+      document.getElementById("translatedText").innerHTML =
+        loraText ? highlightTerms(loraText, termsTgt) : "（暂无翻译）"
+      document.getElementById("metaTaskId").textContent = data.task_id || "-"
+      document.getElementById("metaLatency").textContent = (data.latency_ms || "-") + "ms"
+      document.getElementById("metaMode").textContent = data.mode || "-"
+      document.getElementById("metaTerms").textContent = termCards.length + " terms"
+      document.getElementById("termCards").innerHTML = termCards.length
+        ? termCards.map(renderTermCard).join("")
+        : '<div class="empty-box">（暂无术语卡片）</div>'
+
+      document.getElementById("fb_direction").value = `${document.getElementById("src").value} → ${document.getElementById("tgt").value}`
+      document.getElementById("fb_source_text").textContent = sourceText || "（暂无原文）"
+      document.getElementById("fb_corrected_translation").value = loraText || ""
+      document.getElementById("fb_comment").value = ""
+      document.getElementById("fb_reason").value = "术语不准"
+      selectFeedbackRating(0)
+      setFeedbackStatus("可修改译文后提交反馈。", "waiting")
+    }
+
+    // 按术语 span 偏移把命中的术语包成高亮 span；后端已去重重叠，这里再兜底跳过越界/重叠。
+    function highlightTerms(text, terms){
+      text = String(text || "")
+      if(!text) return ""
+      const spans = (terms || [])
+        .filter(t => Array.isArray(t.span) && t.span.length === 2 && t.span[0] < t.span[1])
+        .slice()
+        .sort((a, b) => a.span[0] - b.span[0])
+      let out = ""
+      let cursor = 0
+      for(const t of spans){
+        let s = t.span[0], e = Math.min(t.span[1], text.length)
+        if(s < cursor || s >= text.length) continue
+        out += escapeHtml(text.slice(cursor, s))
+        const label = [t.term_zh, t.term_en].filter(Boolean).join(" / ") || t.type || "术语"
+        out += `<span class="term-hl" title="${escapeHtml(label)}">${escapeHtml(text.slice(s, e))}</span>`
+        cursor = e
+      }
+      out += escapeHtml(text.slice(cursor))
+      return out
+    }
+
+    function renderTermCard(card){
+      return `
+        <div class="term-card">
+          <div class="term-card-head">
+            <span class="term-main">${escapeHtml(card.matched_term || card.term_zh || "术语")}</span>
+            <span class="term-tag">${escapeHtml(card.type || "term")}</span>
+          </div>
+          <div class="term-explain">${escapeHtml(card.explain_text || "（暂无解释）")}</div>
+        </div>
+      `
+    }
+
+    function clearForm(){
+      document.getElementById("text").value = ""
+      document.getElementById("sourceHighlightedText").textContent = "（暂无原文）"
+      document.getElementById("baseTranslationText").textContent = "（暂无翻译）"
+      document.getElementById("translatedText").textContent = "（暂无翻译）"
+      document.getElementById("termCards").innerHTML = '<div class="empty-box">（暂无术语卡片）</div>'
+      document.getElementById("raw").textContent = "{}"
+      document.getElementById("metaTaskId").textContent = "-"
+      document.getElementById("metaLatency").textContent = "-"
+      document.getElementById("metaMode").textContent = "-"
+      document.getElementById("metaTerms").textContent = "-"
+      setStatus("等待翻译...", "waiting")
+      resetFeedbackForm()
+    }
+
+    function setStatus(text, type){
+      const el = document.getElementById("reqStatus")
+      el.textContent = text
+      el.className = "status-box " + type
+    }
+
+    function setFeedbackStatus(text, type){
+      const el = document.getElementById("fb_status")
+      el.textContent = text
+      el.className = "status-box " + type
+    }
+
+    function syncFeedbackButtons(){
+      const selected = window.selectedFeedbackRating
+      const mapping = {
+        fb_rating_good: selected === 1,
+        fb_rating_bad: selected === -1,
+        fb_rating_neutral: selected === 0,
+      }
+      Object.entries(mapping).forEach(([id, active]) => {
+        const el = document.getElementById(id)
+        if(el) el.classList.toggle("active", !!active)
+      })
+    }
+
+    function selectFeedbackRating(rating){
+      window.selectedFeedbackRating = Number(rating)
+      syncFeedbackButtons()
+    }
+
+    function resetFeedbackForm(){
+      document.getElementById("fb_reason").value = "术语不准"
+      document.getElementById("fb_corrected_translation").value = (window.lastTranslationData && window.lastTranslationData.lora_translation) || ""
+      document.getElementById("fb_comment").value = ""
+      document.getElementById("fb_direction").value = "-"
+      document.getElementById("fb_source_text").textContent = "（暂无原文）"
+      selectFeedbackRating(0)
+      setFeedbackStatus(window.lastTaskId ? "等待反馈..." : "请先完成一次翻译。", "waiting")
+    }
+
+    async function submitFeedback(){
+      if(!window.lastTaskId || !window.lastTranslationData){
+        alert("请先完成一次翻译")
+        return
+      }
+
+      const rating = Number(window.selectedFeedbackRating || 0)
+      const reason = document.getElementById("fb_reason").value
+      const correctedTranslation = document.getElementById("fb_corrected_translation").value.trim()
+      const comment = document.getElementById("fb_comment").value.trim()
+      const originalTranslation = window.lastTranslationData.lora_translation || ""
+      const inputText = window.lastTranslationData.input_text || document.getElementById("text").value || ""
+
+      if(rating === 0 && !correctedTranslation && !comment){
+        alert("请至少提交修订译文、补充说明或评分")
+        return
+      }
+
+      setFeedbackStatus("正在提交反馈...", "loading")
+
+      const resp = await authFetch("/api/feedback/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scene: "translation",
+          task_type: "TranslationTask",
+          task_id: String(window.lastTaskId),
+          rating,
+          reason,
+          comment,
+          corrected_translation: correctedTranslation,
+          original_translation: originalTranslation,
+          input_text: inputText,
+          src_lang: document.getElementById("src").value,
+          tgt_lang: document.getElementById("tgt").value
+        })
+      })
+
+      if(!resp.ok){
+        let msg = "反馈提交失败"
+        try{
+          const data = await resp.json()
+          msg = data.detail || data.error || JSON.stringify(data)
+        }catch(e){}
+        setFeedbackStatus(msg, "error")
+        return
+      }
+
+      setFeedbackStatus("反馈提交成功。", "success")
+    }
+
+    function goPage(url){ window.location.href = url }
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+    function escapeHtml(s){
+      return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    }
+  </script>
+</body>
+</html>

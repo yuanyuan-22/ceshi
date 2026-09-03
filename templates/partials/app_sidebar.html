@@ -1,0 +1,58 @@
+{% load static %}
+{% with active=active|default:'home' %}
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">🏥</div>
+    <div class="sidebar-title">医疗AI助手</div>
+    <div class="sidebar-subtitle">Medical AI System</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item{% if active == 'home' %} active{% endif %}" onclick="goPage('/home/')">
+      <span class="nav-icon">🏠</span>
+      <span>首页</span>
+    </div>
+    <div class="nav-item{% if active == 'translate' %} active{% endif %}" onclick="goPage('/translate/')">
+      <span class="nav-icon">🌐</span>
+      <span>翻译助手</span>
+    </div>
+    <div class="nav-item{% if active == 'qa' %} active{% endif %}" onclick="goPage('/qa/')">
+      <span class="nav-icon">💬</span>
+      <span>智能问答</span>
+    </div>
+    <div class="nav-item{% if active == 'medical_text_analysis' %} active{% endif %}" onclick="goPage('/medical-text-analysis/')">
+      <span class="nav-icon">🧾</span>
+      <span>文本解析</span>
+    </div>
+    <div class="nav-item{% if active == 'appointments' %} active{% endif %}" onclick="goPage('/appointments/')">
+      <span class="nav-icon">📅</span>
+      <span>预约挂号</span>
+    </div>
+    <div class="nav-item{% if active == 'history' %} active{% endif %}" onclick="goPage('/history/')">
+      <span class="nav-icon">🕓</span>
+      <span>历史记录</span>
+    </div>
+    <div class="nav-item{% if active == 'feedback' %} active{% endif %}" onclick="goPage('/feedback/')">
+      <span class="nav-icon">⭐</span>
+      <span>系统反馈</span>
+    </div>
+    <div class="nav-item{% if active == 'profile' %} active{% endif %}" onclick="goPage('/profile/')">
+      <span class="nav-icon">👤</span>
+      <span>个人资料</span>
+    </div>
+    <div class="nav-item{% if active == 'account' %} active{% endif %}" onclick="goPage('/profile/?section=account')">
+      <span class="nav-icon">🔐</span>
+      <span>账户安全</span>
+    </div>
+    <div class="nav-item{% if active == 'kb' %} active{% endif %}" onclick="goPage('/kb/dashboard/')">
+      <span class="nav-icon">📚</span>
+      <span>KB 术语库</span>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="nav-item" onclick="logout()">
+      <span class="nav-icon">🚪</span>
+      <span>退出登录</span>
+    </div>
+  </div>
+</aside>
+{% endwith %}

@@ -1,0 +1,3525 @@
+﻿{
+  "generated_at": "2026-03-31T19:54:42",
+  "database": {
+    "alias": "default",
+    "name": "medical_ai_system",
+    "engine": "django.db.backends.mysql",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "charset": "utf8mb4",
+    "timezone": "UTC",
+    "table_count": 18
+  },
+  "tables": [
+    {
+      "name": "accounts_userprofile",
+      "table_type": "table",
+      "model_label": "accounts.UserProfile",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 3,
+        "comment": "",
+        "created_at": "2026-03-30 02:22:10",
+        "updated_at": "2026-03-30 06:30:42"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "phone",
+          "db_type": "varchar(20)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "gender",
+          "db_type": "varchar(1)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 1,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "age",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 5,
+          "name": "occupation",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "department",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "hospital",
+          "db_type": "varchar(200)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 200,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 8,
+          "name": "bio",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 9,
+          "name": "avatar_url",
+          "db_type": "varchar(500)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 500,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 10,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 11,
+          "name": "updated_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 12,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": true,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 13,
+          "name": "role",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "user_id",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "user_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "accounts_userprofile_user_id_92240672_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "audit_auditlog",
+      "table_type": "table",
+      "model_label": "audit.AuditLog",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 65,
+        "comment": "",
+        "created_at": "2026-03-03 09:34:41",
+        "updated_at": "2026-03-31 01:34:39"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "action",
+          "db_type": "varchar(128)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 128,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "method",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "path",
+          "db_type": "varchar(512)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 512,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "status_code",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 6,
+          "name": "ip",
+          "db_type": "varchar(64)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 64,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "user_agent",
+          "db_type": "varchar(512)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 512,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 8,
+          "name": "request_id",
+          "db_type": "varchar(64)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 64,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 9,
+          "name": "latency_ms",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 10,
+          "name": "extra",
+          "db_type": "json",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "json",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 11,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 12,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "audit_audit_action_766c6d_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "action",
+            "created_at"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "audit_audit_request_06fe30_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "request_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "audit_audit_user_id_a3c2bc_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "user_id",
+            "created_at"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "audit_auditlog_user_id_c1cca96c_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "auth_group",
+      "table_type": "table",
+      "model_label": "auth.Group",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 2,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:36",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "name",
+          "db_type": "varchar(150)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": true,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 150,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "name",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "name"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "auth_group_permissions",
+      "table_type": "table",
+      "model_label": "",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 54,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:35",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "group_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 3,
+          "name": "permission_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "permission_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "group_id",
+            "permission_id"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+          "columns": [
+            "permission_id"
+          ],
+          "referenced_table": "auth_permission",
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
+          "columns": [
+            "group_id"
+          ],
+          "referenced_table": "auth_group",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "auth_permission",
+      "table_type": "table",
+      "model_label": "auth.Permission",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 62,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:36",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "name",
+          "db_type": "varchar(255)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 255,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "content_type_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 4,
+          "name": "codename",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "auth_permission_content_type_id_codename_01ab375a_uniq",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "content_type_id",
+            "codename"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "auth_permission_content_type_id_2f476e4b_fk_django_co",
+          "columns": [
+            "content_type_id"
+          ],
+          "referenced_table": "django_content_type",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "auth_user",
+      "table_type": "table",
+      "model_label": "auth.User",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 4,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:36",
+        "updated_at": "2026-03-30 06:30:18"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "password",
+          "db_type": "varchar(128)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 128,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "last_login",
+          "db_type": "datetime(6)",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 4,
+          "name": "is_superuser",
+          "db_type": "tinyint(1)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "tinyint",
+          "char_length": null,
+          "numeric_precision": 3,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 5,
+          "name": "username",
+          "db_type": "varchar(150)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": true,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 150,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "first_name",
+          "db_type": "varchar(150)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 150,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "last_name",
+          "db_type": "varchar(150)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 150,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 8,
+          "name": "email",
+          "db_type": "varchar(254)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 254,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 9,
+          "name": "is_staff",
+          "db_type": "tinyint(1)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "tinyint",
+          "char_length": null,
+          "numeric_precision": 3,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 10,
+          "name": "is_active",
+          "db_type": "tinyint(1)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "tinyint",
+          "char_length": null,
+          "numeric_precision": 3,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 11,
+          "name": "date_joined",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "username",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "username"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "auth_user_groups",
+      "table_type": "table",
+      "model_label": "",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 2,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:35",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 3,
+          "name": "group_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "auth_user_groups_group_id_97559544_fk_auth_group_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "group_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "auth_user_groups_user_id_group_id_94350c0c_uniq",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "user_id",
+            "group_id"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "auth_user_groups_group_id_97559544_fk_auth_group_id",
+          "columns": [
+            "group_id"
+          ],
+          "referenced_table": "auth_group",
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "auth_user_user_permissions",
+      "table_type": "table",
+      "model_label": "",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 0,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:35",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 3,
+          "name": "permission_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "permission_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "user_id",
+            "permission_id"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+          "columns": [
+            "permission_id"
+          ],
+          "referenced_table": "auth_permission",
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "django_admin_log",
+      "table_type": "table",
+      "model_label": "admin.LogEntry",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 13,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:36",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "action_time",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 3,
+          "name": "object_id",
+          "db_type": "longtext",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "object_repr",
+          "db_type": "varchar(200)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 200,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "action_flag",
+          "db_type": "smallint unsigned",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "smallint",
+          "char_length": null,
+          "numeric_precision": 5,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 6,
+          "name": "change_message",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "content_type_id",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "content_type_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "django_admin_log_user_id_c564eba6_fk_auth_user_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "user_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+          "columns": [
+            "content_type_id"
+          ],
+          "referenced_table": "django_content_type",
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "django_admin_log_user_id_c564eba6_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "django_content_type",
+      "table_type": "table",
+      "model_label": "contenttypes.ContentType",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 16,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:36",
+        "updated_at": ""
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "app_label",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "model",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "django_content_type_app_label_model_76bd3d3b_uniq",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "app_label",
+            "model"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "django_migrations",
+      "table_type": "table",
+      "model_label": "",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 30,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:34",
+        "updated_at": "2026-03-30 02:22:10"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "app",
+          "db_type": "varchar(255)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 255,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "name",
+          "db_type": "varchar(255)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 255,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "applied",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "django_session",
+      "table_type": "table",
+      "model_label": "sessions.Session",
+      "category": "系统表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 2,
+        "comment": "",
+        "created_at": "2026-02-24 05:01:37",
+        "updated_at": "2026-03-30 06:32:51"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "session_key",
+          "db_type": "varchar(40)",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 40,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 2,
+          "name": "session_data",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "expire_date",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "session_key"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "django_session_expire_date_a5c62663",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "expire_date"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "feedback_feedback",
+      "table_type": "table",
+      "model_label": "feedback.Feedback",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 11,
+        "comment": "",
+        "created_at": "2026-03-03 06:49:22",
+        "updated_at": "2026-03-30 06:35:48"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "scene",
+          "db_type": "varchar(32)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 32,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "task_type",
+          "db_type": "varchar(64)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 64,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "task_id",
+          "db_type": "varchar(64)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 64,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "rating",
+          "db_type": "smallint",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "smallint",
+          "char_length": null,
+          "numeric_precision": 5,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 6,
+          "name": "comment",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "extra",
+          "db_type": "json",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "json",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 9,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "feedback_fe_scene_61ca03_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "scene",
+            "created_at"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "feedback_fe_task_ty_12d04e_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "task_type",
+            "task_id"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        },
+        {
+          "name": "feedback_fe_user_id_be0124_idx",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "user_id",
+            "created_at"
+          ],
+          "orders": [
+            "A",
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "feedback_feedback_user_id_f7dd5014_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kb_kbentity",
+      "table_type": "table",
+      "model_label": "kb.KBEntity",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 1,
+        "comment": "",
+        "created_at": "2026-03-25 09:51:51",
+        "updated_at": "2026-03-31 03:03:34"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "entity_key",
+          "db_type": "varchar(200)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": true,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 200,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "canonical_key",
+          "db_type": "varchar(200)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 200,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "category",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "source",
+          "db_type": "varchar(100)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "langs",
+          "db_type": "json",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "json",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 7,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "updated_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "entity_key",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "entity_key"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      "name": "kb_rawkbupload",
+      "table_type": "table",
+      "model_label": "kb.RawKBUpload",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 8,
+        "comment": "",
+        "created_at": "2026-03-25 09:51:51",
+        "updated_at": "2026-03-30 09:32:58"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "file",
+          "db_type": "varchar(100)",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "content",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "file_type",
+          "db_type": "varchar(20)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "status",
+          "db_type": "varchar(20)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 7,
+          "name": "updated_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "uploaded_by_id",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "kb_rawkbupload_uploaded_by_id_67d76fff_fk_auth_user_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "uploaded_by_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "kb_rawkbupload_uploaded_by_id_67d76fff_fk_auth_user_id",
+          "columns": [
+            "uploaded_by_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kb_termcard",
+      "table_type": "table",
+      "model_label": "kb.TermCard",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 5,
+        "comment": "",
+        "created_at": "2026-03-25 09:51:52",
+        "updated_at": "2026-03-31 03:03:34"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "lang",
+          "db_type": "varchar(8)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 8,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "term",
+          "db_type": "varchar(512)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 512,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "type",
+          "db_type": "varchar(64)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 64,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "explain_text",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "entity_id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "kb_termcard_entity_id_ea098519_fk_kb_kbentity_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "entity_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "kb_termcard_entity_id_ea098519_fk_kb_kbentity_id",
+          "columns": [
+            "entity_id"
+          ],
+          "referenced_table": "kb_kbentity",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "qa_qatask",
+      "table_type": "table",
+      "model_label": "qa.QATask",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 98,
+        "comment": "",
+        "created_at": "2026-02-25 07:38:38",
+        "updated_at": "2026-03-30 06:32:51"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "question",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "lang",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "answer",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "confidence",
+          "db_type": "double",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "double",
+          "char_length": null,
+          "numeric_precision": 22,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 6,
+          "name": "sources_json",
+          "db_type": "json",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "json",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 7,
+          "name": "latency_ms",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "status",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 9,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 10,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": true,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "qa_qatask_user_id_d161d646_fk_auth_user_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "user_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "qa_qatask_user_id_d161d646_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "translation_translationtask",
+      "table_type": "table",
+      "model_label": "translation.TranslationTask",
+      "category": "业务表",
+      "summary": {
+        "engine": "InnoDB",
+        "collation": "utf8mb4_unicode_ci",
+        "row_estimate": 262,
+        "comment": "",
+        "created_at": "2026-03-25 06:13:44",
+        "updated_at": "2026-03-31 01:34:39"
+      },
+      "columns": [
+        {
+          "position": 1,
+          "name": "id",
+          "db_type": "bigint",
+          "nullable": false,
+          "default": "",
+          "is_primary": true,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": true,
+          "extra": "auto_increment",
+          "comment": "",
+          "data_type": "bigint",
+          "char_length": null,
+          "numeric_precision": 19,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 2,
+          "name": "src_lang",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 3,
+          "name": "tgt_lang",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 4,
+          "name": "domain",
+          "db_type": "varchar(32)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 32,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 5,
+          "name": "input_text",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 6,
+          "name": "output_text",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 7,
+          "name": "terms_json",
+          "db_type": "json",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "json",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 8,
+          "name": "latency_ms",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 9,
+          "name": "status",
+          "db_type": "varchar(16)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "varchar",
+          "char_length": 16,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 10,
+          "name": "created_at",
+          "db_type": "datetime(6)",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "datetime",
+          "char_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": 6,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 11,
+          "name": "user_id",
+          "db_type": "int",
+          "nullable": false,
+          "default": "",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": true,
+          "auto_increment": false,
+          "extra": "",
+          "comment": "",
+          "data_type": "int",
+          "char_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "datetime_precision": null,
+          "charset": "",
+          "collation": ""
+        },
+        {
+          "position": 12,
+          "name": "base_translation",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "_utf8mb4\\'\\'",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        },
+        {
+          "position": 13,
+          "name": "lora_translation",
+          "db_type": "longtext",
+          "nullable": false,
+          "default": "_utf8mb4\\'\\'",
+          "is_primary": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "auto_increment": false,
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "data_type": "longtext",
+          "char_length": 4294967295,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "datetime_precision": null,
+          "charset": "utf8mb4",
+          "collation": "utf8mb4_unicode_ci"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "type": "BTREE",
+          "columns": [
+            "id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": true
+        },
+        {
+          "name": "translation_translationtask_user_id_1cf22a12_fk_auth_user_id",
+          "unique": false,
+          "type": "BTREE",
+          "columns": [
+            "user_id"
+          ],
+          "orders": [
+            "A"
+          ],
+          "is_primary": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "translation_translationtask_user_id_1cf22a12_fk_auth_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_table": "auth_user",
+          "referenced_columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.git/
+.gitignore
+*.md
+!readme.md
+.DS_Store
+venv/
+.venv/
+
+# Models (downloaded at runtime or mounted via volumes)
+huggingface/hub/models--facebook--nllb-200-distilled-600M/
+huggingface/hub/models--BAAI--bge-m3/
+huggingface/hub/blobs/
+scripts/models/nllb-medical-lora/checkpoint-*/
+scripts/models/nllb-medical-lora-optimized/checkpoint-*/
+scripts/models/nllb-paramed-lora-1000-e20-b24/checkpoint-*/
+
+# Runtime data (mounted via volumes)
+kb_uploads/
+staticfiles/
+backend/data/kb/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dev tools (not needed in container)
+.ipynb_checkpoints/
+notebooks/

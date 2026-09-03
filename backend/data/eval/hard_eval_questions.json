@@ -1,0 +1,282 @@
+[
+  {
+    "question": "我最近总是打喷嚏、流清鼻涕、鼻塞，还有点喉咙痒，全身轻微乏力",
+    "lang": "zh",
+    "expected_entity_keys": ["common cold"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "感冒一个多星期了还不好，开始咳黄绿色浓痰，有时胸痛",
+    "lang": "zh",
+    "expected_entity_keys": ["bronchitis"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "高烧39度不退，浑身酸痛发冷，头痛剧烈，干咳胸闷",
+    "lang": "zh",
+    "expected_entity_keys": ["influenza"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "体温持续在38.5度左右，畏寒，全身无力，食欲很差",
+    "lang": "zh",
+    "expected_entity_keys": ["fever"],
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "question": "血压一直140/90以上，有时头晕后脑勺胀痛，偶尔流鼻血",
+    "lang": "zh",
+    "expected_entity_keys": ["hypertension"],
+    "category": "cardiovascular",
+    "difficulty": "easy"
+  },
+  {
+    "question": "胸口压榨性剧痛，向左肩和后背放射，出冷汗，恶心想吐，吃了速效救心丸没缓解",
+    "lang": "zh",
+    "expected_entity_keys": ["myocardial infarction"],
+    "category": "cardiovascular",
+    "difficulty": "hard"
+  },
+  {
+    "question": "瘦了很多，总是口渴想喝水，一天要跑十几次厕所，吃得多但体重下降",
+    "lang": "zh",
+    "expected_entity_keys": ["diabetes", "diabetes mellitus"],
+    "category": "endocrine",
+    "difficulty": "medium"
+  },
+  {
+    "question": "多饮多食多尿还瘦了，去医院检查血糖很高",
+    "lang": "zh",
+    "expected_entity_keys": ["diabetes mellitus"],
+    "category": "endocrine",
+    "difficulty": "easy"
+  },
+  {
+    "question": "上腹部在饭后两三个小时开始烧灼样疼痛，饿的时候加重，吃点东西能缓解",
+    "lang": "zh",
+    "expected_entity_keys": ["peptic ulcer"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "上腹中部反复隐痛，吃辛辣刺激食物后加重，有时反酸打嗝",
+    "lang": "zh",
+    "expected_entity_keys": ["gastritis"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "吃了不干净的路边摊后开始剧烈呕吐腹泻，肚子一阵阵绞痛，还有点低烧",
+    "lang": "zh",
+    "expected_entity_keys": ["gastroenteritis"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "右下腹开始隐隐作痛，后来变成持续剧痛，还恶心没食欲，稍微活动肚子就更疼",
+    "lang": "zh",
+    "expected_entity_keys": ["appendicitis"],
+    "category": "digestive",
+    "difficulty": "hard"
+  },
+  {
+    "question": "脸上长了很多红色的痘痘白头，有的又大又疼，消了又长，反反复复好几年了",
+    "lang": "zh",
+    "expected_entity_keys": ["acne"],
+    "category": "dermatology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "皮肤上出现红斑、脱屑、剧烈瘙痒，尤其是肘窝膝盖后面最严重，一抓就破",
+    "lang": "zh",
+    "expected_entity_keys": ["eczema"],
+    "category": "dermatology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "暴露部位皮肤瘙痒起疹子，换了新护肤品后出现，红红的边界不清",
+    "lang": "zh",
+    "expected_entity_keys": ["dermatitis"],
+    "category": "dermatology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "手指甲旁边又红又肿又痛，还有黄白色脓液流出来",
+    "lang": "zh",
+    "expected_entity_keys": ["paronychia"],
+    "category": "dermatology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "身体多个部位出现不明原因的肿块，持续增大，伴有无力、体重下降、低热不退",
+    "lang": "zh",
+    "expected_entity_keys": ["cancer"],
+    "category": "oncology",
+    "difficulty": "hard"
+  },
+  {
+    "question": "面色发白，经常头晕乏力，稍微活动就心慌气短，指甲脆薄发白",
+    "lang": "zh",
+    "expected_entity_keys": ["anemia"],
+    "category": "hematology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "晚上躺在床上翻来覆去就是睡不着，脑子里思绪停不下来，白天特别疲惫",
+    "lang": "zh",
+    "expected_entity_keys": ["insomnia"],
+    "category": "neurological",
+    "difficulty": "easy"
+  },
+  {
+    "question": "排尿时烧灼痛，总想上厕所但每次只有一点点，尿液浑浊有异味",
+    "lang": "zh",
+    "expected_entity_keys": ["cystitis"],
+    "category": "urology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "小便时疼痛灼热，下腹部坠胀不适，小便次数明显增多",
+    "lang": "zh",
+    "expected_entity_keys": ["cystitis"],
+    "category": "urology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "A patient presents with sudden chest pain radiating to the left arm, profuse sweating and nausea",
+    "lang": "en",
+    "expected_entity_keys": ["myocardial infarction"],
+    "category": "cardiovascular",
+    "difficulty": "hard"
+  },
+  {
+    "question": "A young adult with persistent fever, sore throat and runny nose for four days",
+    "lang": "en",
+    "expected_entity_keys": ["common cold"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "A patient with high fever, severe body aches, dry cough and extreme fatigue during flu season",
+    "lang": "en",
+    "expected_entity_keys": ["influenza"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Right lower quadrant abdominal pain that started around the navel and migrated downward, with nausea and loss of appetite",
+    "lang": "en",
+    "expected_entity_keys": ["appendicitis"],
+    "category": "digestive",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Burning epigastric pain relieved by food or antacids, worse when hungry, with occasional black stools",
+    "lang": "en",
+    "expected_entity_keys": ["peptic ulcer"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Persistent epigastric pain and bloating, worse after spicy or greasy meals, with belching and nausea",
+    "lang": "en",
+    "expected_entity_keys": ["gastritis"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Acute onset of vomiting and watery diarrhea after eating street food, with abdominal cramps and low-grade fever",
+    "lang": "en",
+    "expected_entity_keys": ["gastroenteritis"],
+    "category": "digestive",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Red inflamed pimples and cysts on the face for several years, some with pus, leaving scars",
+    "lang": "en",
+    "expected_entity_keys": ["acne"],
+    "category": "dermatology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Red, itchy patches on the skin with dry scaling, especially at elbow and knee creases, worse in winter",
+    "lang": "en",
+    "expected_entity_keys": ["eczema"],
+    "category": "dermatology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Itchy red inflamed skin after using a new cosmetic product, with burning sensation",
+    "lang": "en",
+    "expected_entity_keys": ["dermatitis"],
+    "category": "dermatology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Persistent cough producing yellow-green sputum for over a week with chest tightness",
+    "lang": "en",
+    "expected_entity_keys": ["bronchitis"],
+    "category": "respiratory",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Elevated blood pressure above 140/90 with occasional dizziness and headaches at the back of the head",
+    "lang": "en",
+    "expected_entity_keys": ["hypertension"],
+    "category": "cardiovascular",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Excessive thirst, frequent urination especially at night, weight loss despite eating more",
+    "lang": "en",
+    "expected_entity_keys": ["diabetes", "diabetes mellitus"],
+    "category": "endocrine",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Pale skin, persistent fatigue, shortness of breath on mild exertion, and brittle nails",
+    "lang": "en",
+    "expected_entity_keys": ["anemia"],
+    "category": "hematology",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Difficulty falling asleep at night, racing thoughts, waking up tired every morning for months",
+    "lang": "en",
+    "expected_entity_keys": ["insomnia"],
+    "category": "neurological",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Redness, swelling and pus around a fingernail, with throbbing pain",
+    "lang": "en",
+    "expected_entity_keys": ["paronychia"],
+    "category": "dermatology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Painful and frequent urination with burning sensation, cloudy urine with strong odor",
+    "lang": "en",
+    "expected_entity_keys": ["cystitis"],
+    "category": "urology",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Elevated body temperature above 38.3°C with chills, fatigue and muscle aches",
+    "lang": "en",
+    "expected_entity_keys": ["fever"],
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Unexplained lumps in multiple areas, progressive weight loss, persistent fatigue and low-grade fever",
+    "lang": "en",
+    "expected_entity_keys": ["cancer"],
+    "category": "oncology",
+    "difficulty": "hard"
+  }
+]

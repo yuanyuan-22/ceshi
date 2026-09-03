@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}术语知识库 - 医疗AI助手{% endblock %}
+
+{% block extra_head %}
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #6366f1;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --sidebar-width: 280px;
+    --success: #10b981;
+    --danger: #ef4444;
+  }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+  .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+  .sidebar {
+    width: var(--sidebar-width);
+    background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+  .sidebar-logo {
+    width: 56px; height: 56px; background: rgba(255,255,255,.2); border-radius: 14px;
+    margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;
+  }
+  .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .sidebar-subtitle { font-size: 12px; opacity: .8; }
+  .sidebar-nav { flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px;
+    color: rgba(255,255,255,.92); text-decoration: none; margin-bottom: 6px; cursor: pointer; transition: all .2s;
+  }
+  .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+  .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+  .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+  .main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 28px 32px;
+    min-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .content-wrapper { width: 100%; max-width: none; }
+  .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+  .page-title { font-size: 28px; font-weight: 700; color: var(--text); }
+  .page-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 6px; }
+  .role-badge { padding: 6px 10px; border-radius: 999px; background: #e0e7ff; color: #4338ca; font-size: 12px; font-weight: 700; }
+  .hero-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .hero-card, .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .hero-card .label { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; }
+  .hero-card .value { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .two-col { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; align-items: start; margin-top: 20px; }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: "";
+    width: 4px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .btn { padding: 12px 18px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; box-shadow: 0 4px 14px rgba(99,102,241,0.35); }
+  .btn-secondary { background: #f3f4f6; color: var(--text); }
+  .btn-danger { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  .status-box { margin-top: 14px; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; background: #f3f4f6; color: var(--text-muted); }
+  .list-box { border: 1px solid var(--border); border-radius: 12px; padding: 8px; max-height: 320px; overflow: auto; background: #fff; }
+  .list-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .list-item:hover { border-color: #dbe2ea; }
+  .list-item.selected { border-color: #2563eb; background: #eff6ff; }
+  .list-item:last-child { margin-bottom: 0; }
+  .list-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .list-meta { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .form-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+  .form-input, textarea, input[type="text"], input[type="file"], select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+    transition: all 0.2s;
+  }
+  .form-input:focus, textarea:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+  }
+  textarea { resize: vertical; min-height: 140px; }
+  .json-box {
+    margin: 0;
+    background: #111827;
+    color: #e5e7eb;
+    border-radius: 10px;
+    border: 1px solid #1f2937;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .empty-box { color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px; }
+  .term-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    background: #fff;
+    margin-bottom: 10px;
+  }
+  .term-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .term-main { font-weight: 800; font-size: 15px; }
+  .term-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #e0e7ff;
+    color: #4338ca;
+  }
+  .term-explain {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  @media (max-width: 1100px) {
+    .grid, .two-col, .hero-strip { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  {% include "partials/app_sidebar.html" with active='kb' %}
+
+  <main class="main-content">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">术语知识库管理台</h1>
+          <p class="page-subtitle">统一蓝色侧边栏与主系统风格已接入。这里恢复知识上传、候选审核、实体翻译、构建与训练数据生成等完整功能。</p>
+        </div>
+        <div class="header-actions">
+          <span id="kbRoleBadge" class="role-badge">管理员</span>
+        </div>
+      </div>
+
+      <div class="hero-strip">
+        <div class="hero-card"><div class="label">上传记录</div><div class="value" id="metricUploads">-</div></div>
+        <div class="hero-card"><div class="label">候选实体</div><div class="value" id="metricCandidates">-</div></div>
+        <div class="hero-card"><div class="label">正式实体</div><div class="value" id="metricEntities">-</div></div>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <div class="card-title">上传原始术语文本</div>
+          <div class="form-group">
+            <label class="form-label" for="kb_file">TXT / DOCX 文件</label>
+            <input id="kb_file" type="file" accept=".txt,.docx" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="kb_text">或直接粘贴结构化文本</label>
+            <textarea id="kb_text" placeholder="可上传术语说明、病例片段或结构化术语文本。"></textarea>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+            <button class="btn btn-primary" onclick="kbUpload()">上传文本</button>
+            <span id="uploadStatus" class="status-box waiting">等待上传</span>
+          </div>
+          <div id="kbUploadPreview" class="json-box" style="max-height:180px; overflow:auto; padding:12px;">暂无上传预览</div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">上传记录</div>
+          <div id="kbUploadListTitle" style="font-size:12px; color:#64748b; margin-bottom:8px;">上传记录</div>
+          <div id="kbUploadList" class="list-box"></div>
+        </section>
+      </div>
+
+      <div class="two-col">
+        <section class="card">
+          <div class="card-title">候选实体列表</div>
+          <div style="font-size:12px; color:#64748b; margin-bottom:8px; line-height:1.6;">
+            抽取出的候选实体会先进入这里，经管理员审核后再写入正式知识库。
+          </div>
+          <div id="kbCandidates" class="list-box" style="max-height:320px;"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">候选实体审核</div>
+          <div id="selectedCandidateLabel" style="font-size:12px; color:#64748b; margin-bottom:8px;">尚未选择候选实体</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+            <input id="kbCandidateTerm" type="text" class="form-input" placeholder="术语名称">
+            <input id="kbCandidateCanonical" type="text" class="form-input" placeholder="规范名 / canonical_key">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+            <input id="kbCandidateCategory" type="text" class="form-input" placeholder="分类，如 disease / symptom">
+            <input id="kbCandidateAliases" type="text" class="form-input" placeholder="别名，多个用逗号分隔">
+          </div>
+          <textarea id="kbCandidateDefinition" rows="3" style="width:100%; resize:vertical; margin-bottom:8px;" placeholder="定义 / 核心说明"></textarea>
+          <textarea id="kbCandidateNotes" rows="3" style="width:100%; resize:vertical; margin-bottom:8px;" placeholder="备注 / 其他补充"></textarea>
+          <textarea id="kbCandidateEditor" rows="12" style="width:100%; resize:vertical; font-family:Consolas, 'Courier New', monospace; font-size:12px;" placeholder="选中候选实体后，可在此编辑 JSON。"></textarea>
+          <textarea id="kbCandidateReviewNotes" rows="4" style="width:100%; resize:vertical; margin-top:8px;" placeholder="审核备注"></textarea>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            <button id="saveCandidateBtn" class="btn btn-secondary" onclick="saveCurrentCandidate()">保存候选</button>
+            <button id="approveCandidateBtn" class="btn btn-primary" onclick="approveCurrentCandidate()">批准写入 KB</button>
+            <button id="rejectCandidateBtn" class="btn btn-danger" onclick="rejectCurrentCandidate()">驳回候选</button>
+          </div>
+          <pre id="kbCandidateEvidence" class="json-box" style="max-height:140px; overflow:auto; padding:12px; margin-top:10px;">暂无证据</pre>
+        </section>
+      </div>
+
+      <div class="two-col">
+        <section class="card">
+          <div class="card-title">正式实体列表</div>
+          <div id="kbEntities" class="list-box" style="max-height:320px;"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">实体 JSON 与术语卡片预览</div>
+          <pre id="kbEntityJson" class="json-box" style="max-height:220px; overflow:auto; padding:12px; margin-bottom:12px;">尚未选择实体</pre>
+          <div id="kbTermCardsPreview" class="list-box" style="max-height:220px;"></div>
+        </section>
+      </div>
+
+      <div class="two-col">
+        <section class="card">
+          <div class="card-title">上传追踪</div>
+          <div id="kbUploadTraceMeta" class="status-box waiting">尚未选择上传记录</div>
+          <div id="kbUploadTraceEntities" style="margin-top:12px;"></div>
+          <pre id="kbUploadTraceContent" class="json-box" style="max-height:280px; overflow:auto; padding:12px; margin-top:12px;">暂无原始内容</pre>
+        </section>
+
+        <section class="card">
+          <div class="card-title">管理操作</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button id="translateEntityBtn" class="btn btn-primary" onclick="translateSelectedEntity()">翻译当前实体</button>
+            <button id="buildMultilangBtn" class="btn btn-primary" onclick="buildMultilang()">构建 KB 检索文件</button>
+            <button id="generateTrainingDataBtn" class="btn btn-primary" onclick="generateTrainingData()">生成 NLLB 训练数据</button>
+          </div>
+          <div style="margin-top:14px; border-top:1px solid var(--border); padding-top:14px;">
+            <div style="font-size:14px; font-weight:600; margin-bottom:8px;">编辑当前实体</div>
+            <textarea id="kbEntityEditor" rows="12" style="width:100%; resize:vertical; font-family:Consolas, 'Courier New', monospace; font-size:12px;" placeholder="选中实体后可编辑 JSON。"></textarea>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+              <button id="saveEntityBtn" class="btn btn-secondary" onclick="saveCurrentEntity()">保存当前实体</button>
+              <button id="deleteEntityBtn" class="btn btn-danger" onclick="deleteCurrentEntity()">删除当前实体</button>
+            </div>
+            <div id="kbBuildStatus" class="status-box info" style="margin-top:10px;">尚未执行管理操作</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'kb/js/kb_dashboard.js' %}?v=20260821"></script>
+<script>
+  function goPage(url){ window.location.href = url; }
+  async function loadKBSummary(){
+    try{
+      const res = await authFetch("/api/kb/summary/", { method: "GET" });
+      const data = await res.json();
+      if(!res.ok) return;
+      const uploads = document.getElementById("metricUploads");
+      const candidates = document.getElementById("metricCandidates");
+      const entities = document.getElementById("metricEntities");
+      if(uploads) uploads.textContent = data.upload_count ?? 0;
+      if(candidates) candidates.textContent = data.candidate_count ?? 0;
+      if(entities) entities.textContent = data.entity_count ?? 0;
+    }catch(e){}
+  }
+  document.addEventListener("DOMContentLoaded", loadKBSummary);
+</script>
+{% endblock %}

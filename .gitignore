@@ -1,0 +1,79 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ============================================
+# Virtual environments
+# ============================================
+venv/
+.venv/
+env/
+
+# ============================================
+# Environment & secrets (NEVER commit)
+# ============================================
+.env
+.env.local
+*.env.local
+
+# ============================================
+# Django
+# ============================================
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+*.log
+
+# ============================================
+# HuggingFace models & caches (downloaded at runtime, ~9GB)
+# ============================================
+huggingface/
+
+# ============================================
+# LoRA model weights & checkpoints (~660MB)
+# ============================================
+scripts/models/
+
+# ============================================
+# Training / dataset caches (not needed to run)
+# ============================================
+*.arrow
+huggingface/datasets/
+backend/data/paramed/
+backend/data/nllb/
+backend/data/kb_raw/
+
+# ============================================
+# Runtime data (mounted via Docker volumes)
+# ============================================
+kb_uploads/
+backend/data/kb/
+
+# ============================================
+# IDE / OS
+# ============================================
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Old git history backup (temporary)
+# ============================================
+.git_old_backup/
+
+# ============================================
+# Local scratch / auto-generated docs (contain Windows paths)
+# ============================================
+directory_structure.txt
+some.md

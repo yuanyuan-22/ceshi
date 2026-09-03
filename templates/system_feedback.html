@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>系统反馈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/auth.js' %}"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --sidebar-width: 280px;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .sidebar-logo {
+      width: 56px; height: 56px; background: rgba(255,255,255,.2); border-radius: 14px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px;
+      color: rgba(255,255,255,.92); text-decoration: none; margin-bottom: 6px; cursor: pointer; transition: all .2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: var(--text); }
+    .page-subtitle { color: var(--text-muted); font-size: 14px; margin-top: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .field textarea, .field input, .field select {
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+    .field textarea { min-height: 140px; resize: vertical; }
+    .field textarea:focus, .field input:focus, .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+    }
+    .btn-secondary {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #f3f4f6;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .score-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .score-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .score-btn.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border-color: transparent;
+    }
+    .status-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+    .feedback-list { display: grid; gap: 12px; }
+    .feedback-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fafafa;
+    }
+    .feedback-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .feedback-score {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .feedback-comment { font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+    .feedback-extra { margin-top: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .empty-box { text-align: center; color: var(--text-muted); padding: 28px 12px; font-size: 14px; }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='feedback' %}
+
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">系统反馈</h1>
+        <p class="page-subtitle">对系统整体进行 0-10 分评分，并提交意见建议，供后续优化参考。</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">提交反馈</div>
+          <div class="field">
+            <label>模块类型</label>
+            <select id="scene">
+              <option value="system" selected>系统整体</option>
+              <option value="translation">翻译模块</option>
+              <option value="qa">问答模块</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>满意度评分（0-10）</label>
+            <div class="score-box" id="scoreBox"></div>
+          </div>
+          <div class="field">
+            <label for="comment">意见建议</label>
+            <textarea id="comment" placeholder="例如：希望增加更多术语解释、优化问答速度、提升翻译术语准确性等。"></textarea>
+          </div>
+          <div class="field">
+            <label for="extraNote">补充说明（可选）</label>
+            <input id="extraNote" type="text" placeholder="如：翻译页、问答页、文本解析页等具体页面建议">
+          </div>
+          <button class="btn-primary" onclick="submitSystemFeedback()">提交反馈</button>
+          <div id="fbStatus" class="status-box">请选择评分并填写意见。</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">我的反馈记录</div>
+          <div id="feedbackList" class="feedback-list">
+            <div class="empty-box">暂无反馈记录</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    requireLogin()
+    let selectedScore = 10
+
+    function buildScoreButtons(){
+      const box = document.getElementById("scoreBox")
+      box.innerHTML = ""
+      for(let i = 0; i <= 10; i++){
+        const btn = document.createElement("button")
+        btn.className = "score-btn" + (i === selectedScore ? " active" : "")
+        btn.textContent = i
+        btn.onclick = () => {
+          selectedScore = i
+          syncScoreButtons()
+        }
+        box.appendChild(btn)
+      }
+    }
+
+    function syncScoreButtons(){
+      document.querySelectorAll(".score-btn").forEach(btn => {
+        btn.classList.toggle("active", Number(btn.textContent) === selectedScore)
+      })
+    }
+
+    async function submitSystemFeedback(){
+      const scene = document.getElementById("scene").value
+      const comment = document.getElementById("comment").value.trim()
+      const extraNote = document.getElementById("extraNote").value.trim()
+      const status = document.getElementById("fbStatus")
+
+      if(!comment){
+        status.innerText = "请先填写意见建议。"
+        return
+      }
+
+      status.innerText = "正在提交..."
+
+      const resp = await authFetch("/api/feedback/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scene,
+          task_type: "SystemFeedback",
+          task_id: "",
+          rating: selectedScore,
+          comment,
+          corrected_translation: "",
+          extra: { extra_note: extraNote, score: selectedScore }
+        })
+      })
+
+      const data = await resp.json()
+      if(!resp.ok){
+        status.innerText = data.detail || "提交失败"
+        return
+      }
+
+      status.innerText = "提交成功。"
+      document.getElementById("comment").value = ""
+      document.getElementById("extraNote").value = ""
+      loadMyFeedback()
+    }
+
+    async function loadMyFeedback(){
+      const resp = await authFetch("/api/feedback/mine/")
+      const data = await resp.json()
+      const list = document.getElementById("feedbackList")
+      const items = data.results || data || []
+      if(!items.length){
+        list.innerHTML = '<div class="empty-box">暂无反馈记录</div>'
+        return
+      }
+      list.innerHTML = items.map(item => {
+        const extra = item.extra || {}
+        return `
+          <div class="feedback-item">
+          <div class="feedback-meta">
+              <span>${escapeHtml(item.scene || "-")} / ${escapeHtml(item.created_at || "")}</span>
+              <span class="feedback-score">评分：${item.rating ?? "-"}/10</span>
+            </div>
+            <div class="feedback-comment">${escapeHtml(item.comment || "")}</div>
+            <div class="feedback-extra">
+              ${extra.extra_note ? `<div>备注：${escapeHtml(extra.extra_note)}</div>` : ""}
+              ${item.corrected_translation ? `<div>修订内容：${escapeHtml(item.corrected_translation)}</div>` : ""}
+            </div>
+          </div>
+        `
+      }).join("")
+    }
+
+    function goPage(url){ window.location.href = url }
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+    function escapeHtml(s){
+      return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    }
+
+    buildScoreButtons()
+    loadMyFeedback()
+  </script>
+</body>
+</html>

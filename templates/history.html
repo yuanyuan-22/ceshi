@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>历史记录</title>
+  {% load static %}
+  <script src="{% static 'js/auth.js' %}"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .sidebar-logo {
+      width: 56px; height: 56px; background: rgba(255,255,255,.2); border-radius: 14px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px;
+      color: rgba(255,255,255,.92); text-decoration: none; margin-bottom: 6px; cursor: pointer; transition: all .2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .content-wrapper { width: 100%; max-width: none; }
+    .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .page-title { font-size: 26px; font-weight: 700; color: var(--text); }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title-text::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .toolbar label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .toolbar input {
+      padding: 8px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      width: 80px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+    }
+    .btn-secondary { background: #f3f4f6; color: var(--text); }
+    .status-bar {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .status-bar.info { background: #dbeafe; color: #2563eb; }
+    .status-bar.success { background: #dcfce7; color: #16a34a; }
+    .status-bar.error { background: #fee2e2; color: #dc2626; }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      max-height: 350px;
+      overflow-y: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      word-wrap: break-word;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:last-child td { border-bottom: none; }
+    .pager { display: flex; align-items: center; gap: 8px; }
+    .page-info { font-size: 12px; color: var(--text-muted); }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-green { background: #dcfce7; color: #16a34a; }
+    .badge-red { background: #fee2e2; color: #dc2626; }
+    .badge-blue { background: #dbeafe; color: #2563eb; }
+    .text-clamp {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .empty-row { text-align: center; color: var(--text-muted); padding: 30px !important; }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='history' %}
+
+    <main class="main-content">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h1 class="page-title">历史记录</h1>
+        </div>
+
+        <div class="toolbar">
+          <label>每页</label>
+          <input id="limit" type="number" min="1" max="50" value="10">
+          <label>条</label>
+          <button class="btn btn-primary" onclick="reloadAll()">加载全部</button>
+          <div id="globalStatus" class="status-bar info">等待加载...</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="card-title-text">翻译历史</span>
+            <div class="pager">
+              <button class="btn btn-secondary" onclick="prevPage('translations')">上一页</button>
+              <button class="btn btn-secondary" onclick="nextPage('translations')">下一页</button>
+              <span id="translationsPageInfo" class="page-info">-</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="translationsTable">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>方向</th>
+                  <th>输入</th>
+                  <th>Base 翻译</th>
+                  <th>LoRA 翻译</th>
+                  <th>耗时</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="card-title-text">问答历史</span>
+            <div class="pager">
+              <button class="btn btn-secondary" onclick="prevPage('qas')">上一页</button>
+              <button class="btn btn-secondary" onclick="nextPage('qas')">下一页</button>
+              <span id="qasPageInfo" class="page-info">-</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="qasTable">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>问题</th>
+                  <th>回答</th>
+                  <th>置信度</th>
+                  <th>耗时</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="card-title-text">反馈历史</span>
+            <div class="pager">
+              <button class="btn btn-secondary" onclick="prevPage('feedbacks')">上一页</button>
+              <button class="btn btn-secondary" onclick="nextPage('feedbacks')">下一页</button>
+              <span id="feedbacksPageInfo" class="page-info">-</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="feedbacksTable">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>场景</th>
+                  <th>评分</th>
+                  <th>方向</th>
+                  <th>原文</th>
+                  <th>原因</th>
+                  <th>修订译文</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    requireLogin()
+
+    const TYPES = ["translations", "qas", "feedbacks"]
+    const META = {
+      translations: { statusId: "translationsPageInfo", tableId: "translationsTable", baseUrl: "/api/history/translations/" },
+      qas: { statusId: "qasPageInfo", tableId: "qasTable", baseUrl: "/api/history/qas/" },
+      feedbacks: { statusId: "feedbacksPageInfo", tableId: "feedbacksTable", baseUrl: "/api/feedback/mine/" }
+    }
+    const state = {
+      translations: { offset: 0, limit: 10, count: 0 },
+      qas: { offset: 0, limit: 10, count: 0 },
+      feedbacks: { offset: 0, limit: 10, count: 0 }
+    }
+
+    function $(id){ return document.getElementById(id) }
+    function escapeHtml(v){ return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+    function formatDate(v){ try { return new Date(v).toLocaleString() } catch { return v } }
+
+    function getStatusBadge(s){
+      const ss = String(s||"").toLowerCase()
+      if(["success","done","completed","ok"].includes(ss)) return '<span class="badge badge-green">'+escapeHtml(s||"success")+'</span>'
+      if(["failed","error"].includes(ss)) return '<span class="badge badge-red">'+escapeHtml(s||"failed")+'</span>'
+      return '<span class="badge badge-blue">'+escapeHtml(s||"-")+'</span>'
+    }
+
+    function setStatus(text, type){
+      const el = $("globalStatus")
+      el.textContent = text
+      el.className = "status-bar " + (type || "info")
+    }
+
+    async function loadSection(type){
+      const page = state[type]
+      page.limit = parseInt($("limit").value) || 10
+      const url = META[type].baseUrl + "?limit=" + page.limit + "&offset=" + page.offset
+
+      try {
+        const resp = await authFetch(url)
+        const data = await resp.json()
+        if(!resp.ok){
+          setStatus("请求失败: " + (data.detail || resp.status), "error")
+          return
+        }
+        page.count = data.count || 0
+        renderRows(type, data.results || [])
+        updatePageInfo(type)
+      } catch (e) {
+        setStatus("加载异常: " + e.message, "error")
+      }
+    }
+
+    function updatePageInfo(type){
+      const page = state[type]
+      const el = $(META[type].statusId)
+      if(page.count === 0){ el.textContent = "0 / 0"; return }
+      const start = page.offset + 1
+      const end = Math.min(page.offset + page.limit, page.count)
+      el.textContent = start + "-" + end + " / " + page.count
+    }
+
+    function renderRows(type, rows){
+      const tbody = $(META[type].tableId).querySelector("tbody")
+      if(!rows.length){
+        tbody.innerHTML = '<tr><td colspan="10" class="empty-row">暂无数据</td></tr>'
+        return
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        if(type === "translations"){
+          return `<tr>
+            <td>${escapeHtml(formatDate(r.created_at))}</td>
+            <td><span class="badge badge-blue">${escapeHtml((r.src_lang||"")+" → "+(r.tgt_lang||""))}</span></td>
+            <td><div class="text-clamp">${escapeHtml(r.input_text||"")}</div></td>
+            <td><div class="text-clamp">${escapeHtml(r.base_translation||"")}</div></td>
+            <td><div class="text-clamp">${escapeHtml(r.lora_translation||"")}</div></td>
+            <td>${r.latency_ms||"-"}ms</td>
+          </tr>`
+        } else if(type === "qas"){
+          return `<tr>
+            <td>${escapeHtml(formatDate(r.created_at))}</td>
+            <td><div class="text-clamp">${escapeHtml(r.question||"")}</div></td>
+            <td><div class="text-clamp">${escapeHtml(r.answer||"")}</div></td>
+            <td>${r.confidence||"-"}</td>
+            <td>${r.latency_ms||"-"}ms</td>
+            <td>${getStatusBadge(r.status)}</td>
+          </tr>`
+        } else {
+          const ratingClass = r.rating >= 4 || r.rating === 1 ? "badge-green" : r.rating === 0 ? "badge-blue" : "badge-red"
+          const reason = (r.extra && r.extra.reason) || ""
+          const srcLang = (r.extra && r.extra.src_lang) || ""
+          const tgtLang = (r.extra && r.extra.tgt_lang) || ""
+          const direction = srcLang && tgtLang ? `${srcLang} → ${tgtLang}` : "-"
+          const sourceText = (r.extra && r.extra.input_text) || ""
+          return `<tr>
+            <td>${escapeHtml(formatDate(r.created_at))}</td>
+            <td><span class="badge badge-blue">${escapeHtml(r.scene||"")}</span></td>
+            <td><span class="badge ${ratingClass}">${r.rating ?? "-"}</span></td>
+            <td><div class="text-clamp">${escapeHtml(direction)}</div></td>
+            <td><div class="text-clamp">${escapeHtml(sourceText)}</div></td>
+            <td><div class="text-clamp">${escapeHtml(reason)}</div></td>
+            <td><div class="text-clamp">${escapeHtml(r.corrected_translation||"")}</div></td>
+            <td><div class="text-clamp">${escapeHtml(r.comment||"")}</div></td>
+          </tr>`
+        }
+      }).join("")
+    }
+
+    async function reloadAll(){
+      TYPES.forEach(t => { state[t].offset = 0 })
+      setStatus("加载中...", "info")
+      await Promise.all(TYPES.map(loadSection))
+      setStatus("加载完成", "success")
+    }
+
+    async function prevPage(type){
+      state[type].offset = Math.max(0, state[type].offset - state[type].limit)
+      await loadSection(type)
+    }
+
+    async function nextPage(type){
+      const next = state[type].offset + state[type].limit
+      if(next >= state[type].count) return
+      state[type].offset = next
+      await loadSection(type)
+    }
+
+    function goPage(url){ window.location.href = url }
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+
+    reloadAll()
+  </script>
+</body>
+</html>

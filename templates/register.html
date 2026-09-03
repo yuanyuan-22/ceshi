@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>注册 - 医疗智能翻译与问答平台</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f6efe6;
+      --ink: #14304a;
+      --muted: #607384;
+      --panel: rgba(255, 251, 245, 0.9);
+      --line: rgba(20, 48, 74, 0.09);
+      --accent: #0f766e;
+      --accent-2: #b45309;
+      --accent-strong: #0f5c56;
+      --shadow: 0 30px 80px rgba(20, 48, 74, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Georgia", "Times New Roman", "Microsoft YaHei", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 18%, rgba(15, 118, 110, 0.15), transparent 24%),
+        radial-gradient(circle at 86% 16%, rgba(180, 83, 9, 0.12), transparent 20%),
+        linear-gradient(140deg, #f9f4eb 0%, #efe0c6 54%, #faf7f2 100%);
+      overflow-x: hidden;
+    }
+
+    .register-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      align-items: stretch;
+    }
+
+    .register-story {
+      padding: 52px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .story-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 48, 74, 0.1);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      width: fit-content;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .story-chip::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 6px rgba(180, 83, 9, 0.14);
+    }
+
+    .story-main {
+      max-width: 640px;
+      padding: 28px 0 18px;
+    }
+
+    .story-main h1 {
+      font-size: clamp(38px, 4.8vw, 68px);
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 18px;
+    }
+
+    .story-main p {
+      max-width: 540px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+
+    .story-list {
+      display: grid;
+      gap: 14px;
+      max-width: 680px;
+    }
+
+    .story-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.54);
+      border: 1px solid rgba(255, 255, 255, 0.68);
+      border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(20, 48, 74, 0.07);
+      backdrop-filter: blur(12px);
+    }
+
+    .story-index {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      background: rgba(15, 118, 110, 0.12);
+    }
+
+    .story-copy strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .story-copy span {
+      display: block;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .story-metrics {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      max-width: 560px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .story-metrics strong {
+      display: block;
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .register-panel {
+      padding: 34px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-card {
+      width: min(100%, 470px);
+      padding: 36px 32px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel-top {
+      margin-bottom: 24px;
+    }
+
+    .panel-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    .panel-card h2 {
+      font-size: 32px;
+      line-height: 1.04;
+      margin-bottom: 10px;
+    }
+
+    .panel-card p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .field-group {
+      margin-top: 18px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .field-shell input {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .field-shell input:focus {
+      border-color: rgba(180, 83, 9, 0.4);
+      box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .field-shell input::placeholder {
+      color: #96a1ac;
+    }
+
+    .register-btn {
+      width: 100%;
+      margin-top: 22px;
+      border: none;
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: linear-gradient(135deg, #b45309, #c56a1b 60%, #0f766e);
+      color: #fff8f2;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(180, 83, 9, 0.26);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .register-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(180, 83, 9, 0.3);
+    }
+
+    .msg-box {
+      margin-top: 18px;
+      min-height: 56px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px dashed rgba(20, 48, 74, 0.12);
+      color: #8a3b12;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .panel-bottom {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .panel-bottom a {
+      text-decoration: none;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    .panel-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 980px) {
+      .register-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .register-story {
+        padding: 34px 22px 14px;
+      }
+
+      .panel-card {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-shell">
+    <section class="register-story">
+      <div>
+        <div class="story-chip">Account Access Layer</div>
+        <div class="story-main">
+          <h1>创建你的平台账户，进入医疗翻译与知识分析工作台</h1>
+          <p>注册后可访问翻译结果、知识问答记录、术语解释卡片和后续个人资料页面，为系统展示和功能扩展提供真实用户流入口。</p>
+        </div>
+        <div class="story-list">
+          <div class="story-item">
+            <div class="story-index">01</div>
+            <div class="story-copy">
+              <strong>个人账户入口</strong>
+              <span>注册后可绑定历史翻译、问答、反馈和用户画像，形成完整使用闭环。</span>
+            </div>
+          </div>
+          <div class="story-item">
+            <div class="story-index">02</div>
+            <div class="story-copy">
+              <strong>多模块联动</strong>
+              <span>登录状态将连接翻译模块、问答模块、知识库和个人中心，便于系统答辩展示。</span>
+            </div>
+          </div>
+          <div class="story-item">
+            <div class="story-index">03</div>
+            <div class="story-copy">
+              <strong>可扩展权限层</strong>
+              <span>后续可以继续扩成普通用户、专家用户和管理员用户的多角色体系。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="story-metrics">
+        <div>
+          <strong>JWT</strong>
+          <span>统一会话鉴权机制</span>
+        </div>
+        <div>
+          <strong>History</strong>
+          <span>支持后续历史追踪展示</span>
+        </div>
+        <div>
+          <strong>Profile</strong>
+          <span>可扩展用户画像信息</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="register-panel">
+      <div class="panel-card">
+        <div class="panel-top">
+          <span class="panel-tag">Create Account</span>
+          <h2>注册新账户</h2>
+          <p>填写基础账户信息后，即可进入医疗智能翻译与问答平台的完整功能流。</p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="username">用户名</label>
+          <div class="field-shell">
+            <input id="username" type="text" placeholder="输入用户名" autocomplete="username">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="email">邮箱</label>
+          <div class="field-shell">
+            <input id="email" type="email" placeholder="输入邮箱地址" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password">密码</label>
+          <div class="field-shell">
+            <input id="password" type="password" placeholder="设置登录密码" autocomplete="new-password">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password2">确认密码</label>
+          <div class="field-shell">
+            <input id="password2" type="password" placeholder="再次输入密码" autocomplete="new-password">
+          </div>
+        </div>
+
+        <button class="register-btn" onclick="register()">创建账户</button>
+
+        <div id="msgBox" class="msg-box">填写账户信息后开始注册。</div>
+
+        <div class="panel-bottom">
+          <span>已有账户？</span>
+          <a href="/login/">返回登录</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+  function register() {
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const password2 = document.getElementById("password2").value.trim();
+      const msgBox = document.getElementById("msgBox");
+
+      if (!username || !email || !password || !password2) {
+          alert("请完整填写注册信息");
+          return;
+      }
+
+      if (password !== password2) {
+          alert("两次输入的密码不一致");
+          return;
+      }
+
+      msgBox.innerText = "正在创建账户...";
+
+      fetch("/api/auth/register/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+              username: username,
+              email: email,
+              password: password
+          })
+      })
+      .then(async (res) => {
+          const data = await res.json();
+          if (!res.ok) {
+              throw new Error(data.detail || data.error || JSON.stringify(data) || "注册失败");
+          }
+          return data;
+      })
+      .then(() => {
+          msgBox.innerText = "注册成功，正在跳转登录页...";
+          setTimeout(() => {
+              window.location.href = "/login/";
+          }, 900);
+      })
+      .catch((err) => {
+          msgBox.innerText = "注册失败，请检查输入信息。";
+          alert(err.message || "注册失败");
+      });
+  }
+  </script>
+</body>
+</html>

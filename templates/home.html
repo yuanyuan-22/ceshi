@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>首页 - 医疗AI助手</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .sidebar-logo {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 14px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: 0.8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .content-wrapper { width: 100%; max-width: none; }
+    .page-title { font-size: 28px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .page-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .status-card {
+      background: #f3f4f6;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .status-card::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .feature-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(99,102,241,0.15);
+    }
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+    .feature-card:nth-child(1) .feature-icon { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .feature-card:nth-child(2) .feature-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .feature-card:nth-child(3) .feature-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .feature-card:nth-child(5) .feature-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .feature-card:nth-child(6) .feature-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .feature-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .feature-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .info-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .info-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+    .info-list { list-style: none; }
+    .info-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-list li:last-child { border-bottom: none; }
+    .info-list li::before { content: "•"; color: var(--primary); font-weight: bold; }
+    @media (max-width: 1200px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 24px 16px;
+      }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='home' %}
+
+    <main class="main-content">
+      <div class="content-wrapper">
+        <h1 class="page-title">欢迎使用医疗AI助手</h1>
+        <p class="page-subtitle">智能翻译、知识问答、术语解析与门诊预约的一体化医疗辅助平台。</p>
+
+        <div id="loginStatus" class="status-card">已登录</div>
+
+        <div class="features-grid">
+          <div class="feature-card" onclick="goPage('/translate/')">
+            <div class="feature-icon">🌐</div>
+            <div class="feature-title">翻译助手</div>
+            <div class="feature-desc">支持医疗文本翻译、术语高亮、结果对比与反馈修订。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/qa/')">
+            <div class="feature-icon">💬</div>
+            <div class="feature-title">智能问答</div>
+            <div class="feature-desc">基于知识检索与生成模型，提供医疗知识问答与证据展示。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/medical-text-analysis/')">
+            <div class="feature-icon">🧾</div>
+            <div class="feature-title">文本解析</div>
+            <div class="feature-desc">输入病例或报告文本，自动识别术语、提取关键信息并生成解释卡片。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/appointments/')">
+            <div class="feature-icon">📅</div>
+            <div class="feature-title">门诊预约挂号</div>
+            <div class="feature-desc">管理员按日期排班，患者按时段挂号，医生查看自己的预约安排。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/history/')">
+            <div class="feature-icon">🕓</div>
+            <div class="feature-title">历史记录</div>
+            <div class="feature-desc">统一查看翻译、问答和反馈记录，便于回溯和管理。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/feedback/')">
+            <div class="feature-icon">⭐</div>
+            <div class="feature-title">系统反馈</div>
+            <div class="feature-desc">对系统整体进行 0-10 分评分并提交意见，帮助后续优化功能。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/profile/')">
+            <div class="feature-icon">👤</div>
+            <div class="feature-title">个人资料</div>
+            <div class="feature-desc">管理个人信息、账户设置与系统使用状态。</div>
+          </div>
+          <div class="feature-card" onclick="goPage('/kb/dashboard/')">
+            <div class="feature-icon">📚</div>
+            <div class="feature-title">KB 术语库</div>
+            <div class="feature-desc">管理医学术语、知识条目与多语言解释内容。</div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-title">系统说明</div>
+          <ul class="info-list">
+            <li>支持医疗文本翻译、术语解释、问答与历史追踪。</li>
+            <li>问答模块结合知识检索与证据返回，提升回答可信度。</li>
+            <li>预约模块按具体日期排班，更符合真实门诊挂号流程。</li>
+            <li>前台页面统一采用固定侧边栏导航，新增入口只需维护一处。</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function checkLogin(){
+      const token = localStorage.getItem("jwt_access")
+      if(!token){
+        alert("请先登录")
+        window.location.href = "/login/"
+        return false
+      }
+      return true
+    }
+
+    function goPage(url){
+      if (checkLogin()) window.location.href = url
+    }
+
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+
+    checkLogin()
+  </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>登录 - 医疗智能翻译与问答平台</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f4efe3;
+      --ink: #102a43;
+      --muted: #5f6c7b;
+      --panel: rgba(255, 252, 246, 0.86);
+      --line: rgba(16, 42, 67, 0.08);
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --warn: #8a3b12;
+      --shadow: 0 30px 80px rgba(16, 42, 67, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Georgia", "Times New Roman", "Microsoft YaHei", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(15, 118, 110, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 18%, rgba(180, 83, 9, 0.14), transparent 24%),
+        linear-gradient(135deg, #f7f1e5 0%, #efe4cb 52%, #f7f3ec 100%);
+      overflow-x: hidden;
+    }
+
+    .login-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      align-items: stretch;
+    }
+
+    .login-story {
+      position: relative;
+      padding: 56px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(16, 42, 67, 0.1);
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.48);
+      backdrop-filter: blur(10px);
+      width: fit-content;
+    }
+
+    .story-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(15, 118, 110, 0.12);
+    }
+
+    .story-main {
+      max-width: 640px;
+      padding: 36px 0;
+    }
+
+    .story-main h1 {
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: 0.96;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 20px;
+    }
+
+    .story-main p {
+      max-width: 520px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 720px;
+    }
+
+    .story-card {
+      padding: 18px 18px 20px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(16, 42, 67, 0.08);
+    }
+
+    .story-card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--accent-strong);
+    }
+
+    .story-card span {
+      display: block;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .story-footer {
+      max-width: 520px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .story-footer div {
+      min-width: 120px;
+    }
+
+    .story-footer strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 20px;
+      color: var(--ink);
+    }
+
+    .login-panel {
+      padding: 36px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-card {
+      width: min(100%, 460px);
+      padding: 38px 34px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel-top {
+      margin-bottom: 24px;
+    }
+
+    .panel-kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+    }
+
+    .panel-card h2 {
+      font-size: 32px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .panel-card p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .field-group {
+      margin-top: 18px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .field-shell {
+      position: relative;
+    }
+
+    .field-shell input {
+      width: 100%;
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .field-shell input:focus {
+      border-color: rgba(15, 118, 110, 0.45);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .field-shell input::placeholder {
+      color: #95a1ad;
+    }
+
+    .login-actions {
+      margin-top: 22px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 16px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      background: linear-gradient(135deg, #0f766e, #115e59 60%, #134e4a);
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(15, 118, 110, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(15, 118, 110, 0.32);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .quick-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+
+    .token-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px dashed rgba(16, 42, 67, 0.12);
+      color: var(--warn);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 56px;
+    }
+
+    .panel-bottom {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .panel-bottom a {
+      color: var(--accent-strong);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .panel-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 980px) {
+      .login-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .login-story {
+        padding: 36px 24px 18px;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-card {
+        padding: 30px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-shell">
+    <section class="login-story">
+      <div>
+        <div class="story-badge">Medical Intelligence Console</div>
+        <div class="story-main">
+          <h1>医疗翻译、知识问答与术语理解的统一入口</h1>
+          <p>这是一个面向医疗场景的多语言智能平台。系统整合专业翻译、术语解析、知识检索与历史追踪能力，支持临床教学、科研阅读与医疗信息辅助理解。</p>
+        </div>
+        <div class="story-grid">
+          <div class="story-card">
+            <strong>多语言翻译</strong>
+            <span>支持医学语句在多语种之间进行专业表达转换，并保留关键术语含义。</span>
+          </div>
+          <div class="story-card">
+            <strong>术语卡片</strong>
+            <span>自动识别疾病、症状、检查与治疗词汇，形成结构化说明与来源提示。</span>
+          </div>
+          <div class="story-card">
+            <strong>知识问答</strong>
+            <span>通过知识库检索与上下文约束生成回答，降低泛化性错误。</span>
+          </div>
+        </div>
+      </div>
+      <div class="story-footer">
+        <div>
+          <strong>5+</strong>
+          <span>支持语言方向</span>
+        </div>
+        <div>
+          <strong>RAG</strong>
+          <span>知识增强问答链路</span>
+        </div>
+        <div>
+          <strong>AI + KB</strong>
+          <span>术语与知识协同工作</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <div class="panel-card">
+        <div class="panel-top">
+          <span class="panel-kicker">Secure Sign In</span>
+          <h2>登录系统</h2>
+          <p>进入医疗智能翻译与问答平台，查看翻译记录、术语解析结果和知识问答内容。</p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="username">用户名</label>
+          <div class="field-shell">
+            <input id="username" type="text" placeholder="输入用户名" autocomplete="username">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password">密码</label>
+          <div class="field-shell">
+            <input id="password" type="password" placeholder="输入密码" autocomplete="current-password">
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button class="login-btn" onclick="login()">进入平台</button>
+          <div class="quick-note">
+            <span>已接入账号鉴权与自动登录检测</span>
+            <span>JWT Session</span>
+          </div>
+        </div>
+
+        <div id="tokenBox" class="token-box">当前未登录</div>
+
+        <div class="panel-bottom">
+          <span>没有账号？</span>
+          <a href="javascript:void(0)" onclick="goRegister()">立即注册</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+  function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !password) {
+          alert("请输入用户名和密码");
+          return;
+      }
+
+      fetch("/api/auth/login/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+              username: username,
+              password: password
+          })
+      })
+      .then(async (res) => {
+          const data = await res.json();
+          if (!res.ok) {
+              throw new Error(data.detail || data.error || "登录失败");
+          }
+          return data;
+      })
+      .then((data) => {
+          localStorage.setItem("jwt_access", data.access);
+          localStorage.setItem("jwt_refresh", data.refresh || "");
+          document.getElementById("tokenBox").innerText = "登录成功，正在进入平台...";
+          window.location.href = "/home/";
+      })
+      .catch((err) => {
+          document.getElementById("tokenBox").innerText = "登录失败：" + (err.message || "请检查用户名和密码");
+          alert(err.message || "登录失败");
+      });
+  }
+
+  function goRegister() {
+      window.location.href = "/register/";
+  }
+
+  (function () {
+      const token = localStorage.getItem("jwt_access");
+      if (token) {
+          fetch("/api/auth/me/", {
+              method: "GET",
+              headers: {
+                  "Authorization": "Bearer " + token
+              }
+          })
+          .then(res => {
+              if (res.ok) {
+                  window.location.href = "/home/";
+              } else {
+                  localStorage.removeItem("jwt_access");
+                  localStorage.removeItem("jwt_refresh");
+              }
+          })
+          .catch(() => {
+              localStorage.removeItem("jwt_access");
+              localStorage.removeItem("jwt_refresh");
+          });
+      }
+  })();
+  </script>
+</body>
+</html>

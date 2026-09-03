@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>医疗文本解析</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/auth.js' %}"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --sidebar-width: 280px;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .sidebar-logo {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,.2);
+      border-radius: 14px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .sidebar-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .sidebar-subtitle { font-size: 12px; opacity: .8; }
+    .sidebar-nav { flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: rgba(255,255,255,.92);
+      text-decoration: none;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.18); }
+    .nav-icon { width: 24px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      padding: 28px 32px;
+      min-height: 100vh;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: var(--text); }
+    .page-subtitle { color: var(--text-muted); font-size: 14px; margin-top: 8px; }
+    .grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .field textarea, .field select {
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+    .field textarea { min-height: 260px; resize: vertical; }
+    .field textarea:focus, .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+    }
+    .status-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+    .analysis-box {
+      min-height: 120px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #ffffff, #fafcff);
+      padding: 14px;
+      line-height: 1.7;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .term-mark { background: #fef08a; padding: 1px 4px; border-radius: 4px; }
+    .term-cards { display: grid; gap: 12px; }
+    .term-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafcff;
+    }
+    .term-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .term-main { font-weight: 700; font-size: 14px; color: var(--text); }
+    .term-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #e0e7ff; color: #4338ca; }
+    .term-explain {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.6;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .term-meta {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .term-meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .term-meta-label {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .empty-box { color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px; }
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav-item span { display: none; }
+      .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 24px 16px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    {% include 'partials/app_sidebar.html' with active='medical_text_analysis' %}
+
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">医疗文本解析</h1>
+        <p class="page-subtitle">输入病例、检查报告或药品说明文本，支持 5 种语言解析，自动识别术语、判断是否为医疗文本，并展示摘要与术语解释卡片。</p>
+      </div>
+
+      <div class="grid">
+        <div>
+          <div class="card">
+            <div class="card-title">输入文本</div>
+            <div class="field">
+              <label for="analysisLang">文本语言</label>
+              <select id="analysisLang">
+                <option value="zh" selected>中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="analysisText">病例/报告内容</label>
+              <textarea id="analysisText" placeholder="例如：患者男，58岁，既往有高血压病史，近一周反复头晕，建议监测血压并继续服用阿司匹林。"></textarea>
+            </div>
+            <button class="btn-primary" onclick="runAnalysis()">开始解析</button>
+            <div id="analysisStatus" class="status-box">等待解析...</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">高亮文本</div>
+            <div id="highlightedText" class="analysis-box">（暂无内容）</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">解析结果</div>
+            <div id="summaryBox" class="analysis-box">（暂无结果）</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">术语解释卡片</div>
+            <div id="termCards" class="term-cards">
+              <div class="empty-box">（暂无术语卡片）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    requireLogin()
+
+    function escapeHtml(s){
+      return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    }
+
+    function highlightTerms(text, terms){
+      if(!terms || !terms.length) return escapeHtml(text)
+      const spans = terms
+        .map(item => ({ term: item.term || "", span: item.span || [] }))
+        .filter(item => item.term && item.span.length === 2)
+        .sort((a, b) => a.span[0] - b.span[0])
+
+      let html = ""
+      let lastEnd = 0
+      spans.forEach(item => {
+        const [start, end] = item.span
+        if (start >= lastEnd) {
+          html += escapeHtml(text.slice(lastEnd, start))
+          html += `<span class="term-mark">${escapeHtml(text.slice(start, end))}</span>`
+          lastEnd = end
+        }
+      })
+      html += escapeHtml(text.slice(lastEnd))
+      return html
+    }
+
+    function renderTermCard(card){
+      const multilang = (card.multilang_terms || []).map(item =>
+        `<span><span class="term-meta-label">${escapeHtml(item.label)}：</span>${escapeHtml(item.value)}</span>`
+      ).join("")
+
+      return `
+        <div class="term-card">
+          <div class="term-card-head">
+            <span class="term-main">${escapeHtml(card.matched_term || card.term_zh || "术语")}</span>
+            <span class="term-tag">${escapeHtml(card.type || "term")}</span>
+          </div>
+          <div class="term-explain">${escapeHtml(card.explain_text || "（暂无解释）")}</div>
+          <div class="term-meta">
+            ${multilang ? `<div class="term-meta-row">${multilang}</div>` : ""}
+            <div class="term-meta-row"><span class="term-meta-label">提示：</span><span>${escapeHtml(card.usage_hint || "")}</span></div>
+          </div>
+        </div>
+      `
+    }
+
+    async function runAnalysis(){
+      const text = document.getElementById("analysisText").value.trim()
+      const lang = document.getElementById("analysisLang").value
+      const status = document.getElementById("analysisStatus")
+
+      if(!text){
+        status.innerText = "请先输入需要解析的文本。"
+        return
+      }
+
+      status.innerText = "正在解析..."
+
+      try {
+        const res = await authFetch("/api/translate/analyze/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, lang })
+        })
+        const data = await res.json()
+
+        if(!res.ok){
+          status.innerText = data.detail || "解析失败"
+          return
+        }
+
+        document.getElementById("highlightedText").innerHTML = highlightTerms(text, data.terms || [])
+        document.getElementById("summaryBox").textContent = data.summary || "（暂无结果）"
+        document.getElementById("termCards").innerHTML = (data.term_cards || []).length
+          ? data.term_cards.map(renderTermCard).join("")
+          : '<div class="empty-box">（暂无术语卡片）</div>'
+
+        if (data.is_medical_text) {
+          status.innerText = "识别为医疗文本，解析完成。"
+        } else {
+          status.innerText = "检测到少量医学术语，但整体更像普通文本，当前仅提供术语提示。"
+        }
+      } catch (e) {
+        status.innerText = "解析异常。"
+      }
+    }
+
+    function goPage(url){ window.location.href = url }
+    function logout(){
+      localStorage.removeItem("jwt_access")
+      localStorage.removeItem("jwt_refresh")
+      window.location.href = "/login/"
+    }
+  </script>
+</body>
+</html>
